@@ -1,0 +1,108 @@
+﻿@using static Constants
+@model New_DTAPP.Models.TransferModel
+@{
+    ViewData["Title"] = "Charts";
+}
+<h1>Data Transfer Requests by Network</h1>
+<form asp-action="RequestsByNetwork">
+    <input type="hidden" name="filtered" value="ButtonClicked" />
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label for="selectedUnit">Client Unit</label>
+                @Html.DropDownList("selectedUnit", ViewBag.ClientUnitId, "", htmlAttributes: new { @class = "form-select" })
+
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label for="raisedAfter">Raised After:</label>
+                @Html.TextBox("raisedAfter", ViewBag.RaisedAfter, "", htmlAttributes: new { @class = "datefield form-select", type = "datetime-local" })
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label for="raisedBefore">Raised Before:</label>
+                @Html.TextBox("raisedBefore", ViewBag.RaisedBefore, "", htmlAttributes: new { @class = "datefield form-select", type = "datetime-local" })
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label for="selectedCompletedUser">Completed User</label>
+                @Html.DropDownList("selectedCompletedUser", ViewBag.CompletedUserId, "", htmlAttributes: new { @class = "form-select" })
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label for="filterSpillOccurred">Spill Occurred</label>
+                @Html.CheckBox("filterSpillOccurred", ViewBag.FilterSpillOccurred, htmlAttributes: new { @class = "form-check" })
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label for="filterTransferDenied">Transfer Denied</label>
+                @Html.CheckBox("filterTransferDenied", ViewBag.FilterTransferDenied, htmlAttributes: new { @class = "form-check" })
+            </div>
+        </div>
+        <div class="col" style="align-self: end; text-align: end;">
+            <button type="submit" style="border: 0; background: transparent">
+                <img src="~/images/More.png" height="20" width="20" title="Filter" />
+            </button>
+            <a asp-action="RequestsByNetwork"
+               asp-route-clearFilters="true">
+                <img src="~/images/Cancel.png" height="20" width="20" title="Clear" />
+            </a>
+        </div>
+    </div>
+</form>
+<style>
+    #chartdiv {
+        width: 100%;
+        height: 65vh;
+    }
+</style>
+
+<div id="chartdiv"></div>
+<a class="btn btn-primary" asp-action="Index">Back</a>
+<script src="~/js/amCharts/core.js"></script>
+<script src="~/js/amCharts/charts.js"></script>
+<script src="~/js/amCharts/themes/animated.js"></script>
+<script>
+    var json = '@ViewBag.jsonData';
+    json = json.replaceAll("&quot;", "\"");
+    var data = JSON.parse(json);
+
+    am4core.addLicense('@Constants.licensekey');
+    am4core.ready(function () {
+        am4core.useTheme(am4themes_animated);
+        var chart = am4core.create("chartdiv", am4charts.ChordDiagram);
+        chart.data = data;
+
+        chart.dataFields.fromName = "origSys";
+        chart.dataFields.toName = "destSys";
+        chart.dataFields.value = "count";
+
+        var nodeLink = chart.links.template;
+        var bullet = nodeLink.bullets.push(new am4charts.CircleBullet());
+        bullet.fillOpacity = 1;
+        bullet.circle.radius = 5;
+        bullet.locationX = 0.5;
+
+        chart.events.on("ready", function () {
+            for (var i = 0; i < chart.links.length; i++) {
+                var link = chart.links.getIndex(i);
+                var bullet = link.bullets.getIndex(0);
+
+                animateBullet(bullet);
+            }
+        })
+        function animateBullet(bullet) {
+            var duration = 3000 * Math.random() + 2000;
+            var animation = bullet.animate([{ property: "locationX", from: 0, to: 1 }], duration)
+            animation.events.on("animationended", function (event) {
+                animateBullet(event.target.object);
+            })
+        }
+    });
+
+</script>

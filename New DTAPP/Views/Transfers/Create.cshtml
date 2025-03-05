@@ -1,0 +1,232 @@
+﻿@model New_DTAPP.Models.TransferModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+<h1>Create</h1>
+
+<h4>Transfer Request</h4>
+<hr />
+<div class="row">
+   
+    <div class="col">
+        <form asp-action="Create">
+            <input id="fileList" name="fileList" value="@ViewData["FileList"]" hidden />
+            
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="RequestCreatedAt" class="form-label">Time of Request (EST)</label>
+                        @if (Model?.RequestCreatedAt != null) {
+                            <input id="RequestCreatedAt" name="RequestCreatedAt" value="@Model.RequestCreatedAt.ToString("yyyy-MM-ddTHH:mm:ss")" type="datetime" class="form-control" />
+                        }
+                        else
+                        {
+                            <input id="RequestCreatedAt" name="RequestCreatedAt"  value="" type="datetime-local" class="form-control" />
+                        }
+                        <span asp-validation-for="RequestCreatedAt" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label asp-for="SentTime" class="form-label">Time Sent (EST)</label>
+                        @if (Model?.SentTime != null)
+                        {
+                            <input id="SentTime" name="SentTime" value="@Model.SentTime.Value.ToString("yyyy-MM-ddTHH:mm:ss")" type="datetime" class="form-control" />
+                        }
+                        else
+                        {
+                            <input id="SentTime" name="SentTime" value="" type="datetime-local" class="form-control" />
+                        }
+                        <span asp-validation-for="SentTime" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="ClientName" class="form-label">Client Name</label>
+                        <input asp-for="ClientName" class="form-control" />
+                        <span asp-validation-for="ClientName" class="text-danger"></span>
+                    </div>
+                   <div class="mb-3">
+                        <label asp-for="ClientUnitId" class="form-label">Client Unit</label>
+                        <select asp-for="ClientUnitId" class="form-control" asp-items="ViewBag.ClientUnitId"></select>
+                        <span asp-validation-for="ClientUnitId" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="TransferTypeId" class="form-label">Transfer Type</label>
+                        <select asp-for="TransferTypeId" class="form-control" asp-items="ViewBag.TransferTypeId"></select>
+                        <span asp-validation-for="TransferTypeId" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="OperationId" class="form-label">Operation Name</label>
+                        <select asp-for="OperationId" class="form-control" asp-items="ViewBag.OperationId"></select>
+                        <span asp-validation-for="OperationId" class="text-danger"></span>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="mb-3">
+                                <label for="numberOfFiles" class="form-label">Number of Files</label>
+                                <input id="numberOfFiles" name="numberOfFiles" class="form-control" disabled>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="mb-3">
+                                <label for="transferSize" class="form-label">Transfer Size</label>
+                                <input id="transferSize" name="transferSize" class="form-control" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="OrigSystemId" class="form-label">Originating System</label>
+                        <select asp-for="OrigSystemId" class="form-control" asp-items="ViewBag.OrigSystemId"></select>
+                        <span asp-validation-for="OrigSystemId" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="DestSystemId" class="form-label">Destination System</label>
+                        <select asp-for="DestSystemId" class="form-control" asp-items="ViewBag.DestSystemId"></select>
+                        <span asp-validation-for="DestSystemId" class="text-danger"></span>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="mb-3 form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="IssoApproval" /> ISSO Approval
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="mb-3 form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="IssueReported" /> Issue Reported
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="mb-3 form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="SpillPrevented" /> Spill Prevented
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="mb-3 form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="SpillOccurred" /> Spill Occurred
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="mb-3 form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="Urgent" /> Transfer Denied
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Comments" class="form-label"></label>
+                        <input asp-for="Comments" class="form-control" />
+                        <span asp-validation-for="Comments" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3 form-check" style="display: none">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="Completed" onchange="setChangeUserAndTime('Completed')" /> Completed
+                        </label>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="CompletedUserId" class="form-label">Completed User Name</label>
+                        <select asp-for="CompletedUserId" asp-items="ViewBag.CompletedUserId" class="form-control">
+                            <option value=""></option>
+                        </select>
+                        <span asp-validation-for="CompletedUserId" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3 form-check" style="display: none">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="Reviewed" onchange="setChangeUserAndTime('Reviewed')" /> Reviewed
+                        </label>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="ReviewedUserId" class="form-label">Reviewed User Name</label>
+                        <select asp-for="ReviewedUserId" asp-items="ViewBag.ReviewedUserId" class="form-control">
+                            <option value=""></option>
+                        </select>
+                        <span asp-validation-for="ReviewedUserId" class="text-danger"></span>
+                    </div>
+                    <div hidden class="mb-3">
+                        <label asp-for="ReviewedAt" class="form-label">Reviewed At</label>
+                        <input id="ReviewedAt" name="ReviewedAt" type="datetime-local" class="form-control" />
+                        <span asp-validation-for="ReviewedAt" class="text-danger"></span>
+                    </div>
+                   
+                    <div class="mb-3">
+                        <input type="submit" value="Save" class="btn btn-primary" /> |
+                        <a class="btn btn-primary" asp-action="Index">Back</a>
+                    </div>
+                </div>
+                <div class="col">
+                    <div>
+                        <label for="files" class="btn btn-secondary">Choose files to transfer</label>
+                        <input type="file" id="files" name="files" style="display:none" multiple>
+                        <label for="folder" class="btn btn-secondary">Choose folder to transfer</label>
+                        <input type="file" id="folder" name="folder" style="display:none" multiple webkitdirectory mozdirectory msdirectory odirectory directory>
+                    </div>
+                    <div class="row align-items-center g-0">
+                        <div class="col">                            
+                            <input type="text" id="addExt" placeholder="File Extension (ie pdf)" name="addExt" class="form-control">
+                        </div>
+                        <div class="col col-md-2">
+                            <input type="text" id="addSize" placeholder="0.0" name="addSize" class="form-control">
+                        </div>
+                        <div class="col align-self-end col-md-2">
+                            <select class="form-select" name="size" id="sizeDropDn">
+                                <option value="bytes">bytes</option>
+                                <option value="KB">KB</option>
+                                <option value="MB">MB</option>
+                                <option value="GB">GB</option>
+                            </select>
+                        </div>
+                        <div class="col align-self-end col-md-2">
+                            <input type="image" src="~/images/Add.png" id="addSingleFile"/>
+                        <div></div>
+                    </div>
+                    <div class="preview" style="padding-top: 1rem;">
+                    </div>
+                </div>
+            </div>
+
+
+          
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/js/FileSelect.js"></script>
+    <script type="text/javascript">
+        const files = document.querySelector('#files');
+        const folder = document.querySelector('#folder');
+        const addsingle = document.getElementById('addSingleFile');
+        
+        $(document).ready(function () {
+            files.addEventListener('change', function () { console.log(files.files); addInputToJsonFileList(files.files); });
+            folder.addEventListener('change', function () { addInputToJsonFileList(folder.files); });
+            addsingle.addEventListener('click', function (event) {
+                event.preventDefault(); addManualFiletoJsonFileList(document.getElementById('addExt').value, document.getElementById('addSize').value, document.getElementById('sizeDropDn').value);
+            });
+
+            //added this
+            listFiles(JSON.parse($("#fileList").val()), false); 
+        });
+        
+    </script>
+}

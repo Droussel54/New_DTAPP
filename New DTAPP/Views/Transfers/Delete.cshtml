@@ -1,0 +1,177 @@
+﻿@model New_DTAPP.Models.TransferModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Transfer Request</h4>
+    <hr />
+    <div class="row">
+        <div class="col">
+            <dl class="row">
+                <dt class="col-sm-4">
+                    Request Created At
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.RequestCreatedAt)
+                </dd>
+                <dt class="col-sm-4">
+                    Sent Time
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.SentTime)
+                </dd>
+                <dt class="col-sm-4">
+                    Client Name
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.ClientName)
+                </dd>
+                <dt class="col-sm-4">
+                    Client Unit
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.ClientUnit!.UnitName)
+                </dd>
+                <dt class="col-sm-4">
+                    Operation Name
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.Operation!.OperationName)
+                </dd>
+                <dt class="col-sm-4">
+                    Number of Files
+                </dt>
+                <dd class="col-sm-8">
+                    <label id="numberOfFiles" name="numberOfFiles"></label>
+                </dd>
+                <dt class="col-sm-4">
+                    Transfer Size
+                </dt>
+                <dd class="col-sm-8">
+                    <label id="transferSize" name="transferSize"></label>
+                </dd>
+                <dt class="col-sm-4">
+                    Originating System
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.OrigSystem.SystemName)
+                </dd>
+                <dt class="col-sm-4">
+                    Destination System
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.DestSystem.SystemName)
+                </dd>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <dd style="float:left">
+                            @Html.DisplayFor(model => model.IssoApproval)
+                        </dd>
+                        <dt style="padding: 0 0 0 1em;">
+                            ISSO Approval
+                        </dt>
+                    </div>
+                    <div class="col-sm-4">
+                        <dd style="float:left">
+                            @Html.DisplayFor(model => model.IssueReported)
+                        </dd>
+                        <dt style="padding: 0 0 0 1em;">
+                            Issue Reported
+                        </dt>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <dd style="float:left">
+                            @Html.DisplayFor(model => model.SpillPrevented)
+                        </dd>
+                        <dt style="padding: 0 0 0 1em;">
+                            Spill Prevented
+                        </dt>
+                    </div>
+                    <div class="col-sm-4">
+                        <dd style="float:left">
+                            @Html.DisplayFor(model => model.SpillOccurred)
+                        </dd>
+                        <dt style="padding: 0 0 0 1em;">
+                            Spill Occurred
+                        </dt>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <dd style="float:left">
+                            @Html.DisplayFor(model => model.Urgent)
+                        </dd>
+                        <dt style="padding: 0 0 0 1em;">
+                            Transfer Denied
+                        </dt>
+                    </div>
+                </div>
+                <dt class="col-sm-4">
+                    Comments
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.Comments)
+                </dd>
+                <!--<dt class="col-sm-4">
+                    Completed
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.Completed)
+                </dd>-->
+                <dt class="col-sm-4">
+                    Completed User
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.CompletedUser!.Username)
+                </dd>
+                <!--<dt class="col-sm-4">
+                    Reviewed
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.Reviewed)
+                </dd>-->
+                <dt class="col-sm-4">
+                    Reviewed User
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.ReviewedUser!.Username)
+                </dd>
+                <dt class="col-sm-4">
+                    Created At
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.CompletedAt)
+                </dd>
+                <dt class="col-sm-4" style="display: none">
+                    Reviewed At
+                </dt>
+            </dl>
+        </div>
+        <div class="col">
+            <div class="preview" style="padding-top: 1rem;">
+            </div>
+        </div>
+    </div>
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="TransferId" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a class="btn btn-primary" asp-action="Index">Back</a>
+    </form>
+    <input id="fileList" name="fileList" value="@ViewData["FileList"]" hidden />
+</div>
+
+@section Scripts {
+    <script src="~/js/FileSelect.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            listFiles(JSON.parse($("#fileList").val()), true);
+        });
+    </script>
+}

@@ -1,0 +1,43 @@
+﻿@model New_DTAPP.Models.TransferTypeModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Transfer Type</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="TransferTypeId" />
+            <div class="mb-3">
+                <label asp-for="TransferTypeDesc" class="form-label"></label>
+                <input asp-for="TransferTypeDesc" class="form-control" />
+                <span asp-validation-for="TransferTypeDesc" class="text-danger"></span>
+            </div>
+            <div class="mb-3 form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Archived" /> @Html.DisplayNameFor(model => model.Archived)
+                </label>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Ordering" class="form-label"></label>
+                <input asp-for="Ordering" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <input type="submit" value="Save" class="btn btn-primary" /> |
+                <a class="btn btn-primary" asp-action="Index">Back</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

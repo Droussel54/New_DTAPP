@@ -1,0 +1,102 @@
+﻿@model New_DTAPP.Models.UserModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>User</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="mb-3">
+                <label asp-for="Username" class="form-label"></label>
+                <input asp-for="Username" class="form-control" />
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="FirstName" class="form-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="LastName" class="form-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Title" class="form-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="mb-3 form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Disabled" /> @Html.DisplayNameFor(model => model.Disabled)
+                </label>
+            </div>
+            <div class="mb-3">
+                <label asp-for="RoleId" class="form-label"></label>
+                <select asp-for="RoleId" class ="form-control" asp-items="ViewBag.RoleId"></select>
+            </div>
+            <div class="mb-3">
+                <input type="submit" value="Create" class="btn btn-primary" /> |
+                <a class="btn btn-primary" asp-action="Index">Back</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#Username").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        type: 'GET',
+                        url: '@Url.Action("FindUsersInAD", "Users")',
+                        data: {
+                            userName: $("#Username").val()
+                        },
+                        success: function (data) {
+                            response(data);
+                        }
+                    });
+                },
+                select: function (event, ui) {
+                    $.ajax({
+                        type: 'GET',
+                        url: '@Url.Action("FindUserInAD", "Users")',
+                        data: {
+                            userName: ui.item.value
+                        },
+                        success: function (data) {
+                            $("#FirstName").val(data.FirstName);
+                            $("#LastName").val(data.LastName);
+                            $("#Email").val(data.Email);
+                        },
+                        dataType: "json"
+                    });
+                },
+                minLength: 2
+            }).focus(function () {
+                $(this).autocomplete("search");
+            });
+        });
+        $("#UserName").keyup(function () {
+            $("#FirstName").val("");
+            $("#LastName").val("");
+            $("#Title").val("");
+            $("#Email").val("");
+        });
+    </script>
+
+}

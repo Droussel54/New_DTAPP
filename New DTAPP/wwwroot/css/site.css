@@ -1,0 +1,64 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.pagination-container {
+    display: flex;
+    flex: 1;
+}
+
+.pagination {
+    display: flex;
+    flex: 1;
+    list-style: none;
+    padding: 0;
+    gap: .625rem;
+}
+
+.page-item, .page-link {
+    height: 2rem;
+    width: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.PagedList-pageCountAndLocation {
+    justify-content: start;
+    order: -1;
+    flex: 1;
+
+}
+
+.sort-button {
+    color: #212529;
+    text-decoration: none;
+}
+
+.sort-div {
+    display: inline-block;
+}
+
+.custom-container {
+    width: 100%;
+    padding-right: var(--bs-gutter-x, .75rem);
+    padding-left: var(--bs-gutter-x, .75rem);
+    margin-right: auto;
+    margin-left: 5%;
+}
+

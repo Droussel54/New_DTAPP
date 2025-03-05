@@ -1,0 +1,76 @@
+   public async Task<IActionResult> Create([Bind("TransferId,RequestCreatedAt,SentTime,ClientName,ClientUnitId,OperationId,OrigSystemId,DestSystemId,IssoApproval,IssueReported" +
+       ",SpillPrevented,SpillOccurred,Comments,CompletedUserId,ReviewedUserId,ReviewedAt,CompletedAt,Urgent,Reviewed,Completed")] Models.TransferModel transfer, string fileList)
+   {
+
+       ICollection<FileModel> fileListCollection;
+       ModelState.Remove("DestSystem");
+       ModelState.Remove("OrigSystem");
+
+       transfer.RequestCreatedAt = DateTime.Now;
+
+       if (!String.IsNullOrEmpty(fileList))
+       {
+           fileListCollection = JsonConvert.DeserializeObject<ICollection<FileModel>>(fileList)!;
+
+           foreach (FileModel file in fileListCollection)
+           {
+               transfer.Files.Add(file);
+           }
+
+       }
+
+       if (transfer.Files.Count < 1)
+       {
+           ModelState.AddModelError("Files", "You must select at least one file or folder to create a transfer request. Controller");
+       }
+
+
+       if (ModelState.IsValid)
+       {
+           _transferRepository.AddTransfer(transfer);
+
+           return RedirectToAction(nameof(Index));
+       }
+       else
+       {
+
+           if (ModelState.ContainsKey("fileList")) {
+               
+               if (ModelState["fileList"] != null)
+               { 
+                   ModelState["fileList"].ValidationState = ModelValidationState.Valid;
+                   ModelState["fileList"].Errors.Clear();
+               }
+           }
+
+
+           #region Delete later
+           //foreach (var modelState in ViewData.ModelState.Values)
+           //{
+           //    foreach (ModelError error in modelState.Errors)
+           //    {
+           //        if (error.ErrorMessage.Contains("fileList"))
+           //        {
+           //           //ModelState.Remove(error);
+           //        }
+           //    }
+           //} 
+           #endregion
+
+
+
+           //Do I even need this here.
+           ViewData["ClientUnitId"] = new SelectList(await _unitRepository.GetAllUnitsAsync(true), "UnitId", "UnitName");
+           ViewData["CompletedUserId"] = new SelectList(await _userRepository.GetAllUsersAsync(), "UserId", "Username");
+           ViewData["DestSystemId"] = new SelectList(await _systemRepository.GetAllSystemsAsync(true), "SystemId", "SystemName");
+           ViewData["OperationId"] = new SelectList(await _operationRepository.GetAllOperationsAsync(true), "OperationId", "OperationName");
+           ViewData["OrigSystemId"] = new SelectList(await _systemRepository.GetAllSystemsAsync(true), "SystemId", "SystemName");
+           ViewData["ReviewedUserId"] = new SelectList(await _userRepository.GetAllUsersAsync(), "UserId", "Username");
+
+           //ViewData["FileList"] = JsonConvert.SerializeObject(transfer.Files.Select(f => new { fileID = f.FileId, fileName = f.FileName, fileSize = f.FileSize }).ToList());
+
+           return View(transfer);
+       }
+   
+       
+   }

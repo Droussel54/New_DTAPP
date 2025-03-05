@@ -1,0 +1,12 @@
+﻿<div>
+    <label for="files" class="btn btn-secondary">Choose files to transfer</label>
+    <input type="file" id="files" name="files" style="display:none" multiple>
+    <label for="folder" class="btn btn-secondary">Choose folder to transfer</label>
+    <input type="file" id="folder" name="folder" style="display:none" multiple webkitdirectory mozdirectory msdirectory odirectory directory>
+</div>
+<div class="preview" style="padding-top: 1rem;">
+</div>
+
+@section Scripts {
+    <script src="~/js/FileSelect.js"></script>
+}

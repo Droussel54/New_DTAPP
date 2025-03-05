@@ -1,0 +1,208 @@
+﻿@using static Constants
+@model New_DTAPP.Models.TransferModel
+@{
+    ViewData["Title"] = "Charts";
+}
+<h1>Data Transfer Request Routes</h1>
+<form asp-action="Routes">
+    <input type="hidden" name="filtered" value="ButtonClicked" />
+
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label for="selectedUnit">Client Unit</label>
+                @Html.DropDownList("selectedUnit", ViewBag.ClientUnitId, "", htmlAttributes: new { @class = "form-select" })
+
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label for="raisedAfter">Raised After:</label>
+                @Html.TextBox("raisedAfter", ViewBag.RaisedAfter, "", htmlAttributes: new { @class = "datefield form-select", type = "datetime-local" })
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label for="raisedBefore">Raised Before:</label>
+                @Html.TextBox("raisedBefore", ViewBag.RaisedBefore, "", htmlAttributes: new { @class = "datefield form-select", type = "datetime-local" })
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label for="selectedCompletedUser">Completed User</label>
+                @Html.DropDownList("selectedCompletedUser", ViewBag.CompletedUserId, "", htmlAttributes: new { @class = "form-select" })
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label for="filterSpillOccurred">Spill Occurred</label>
+                @Html.CheckBox("filterSpillOccurred", ViewBag.FilterSpillOccurred, htmlAttributes: new { @class = "form-check" })
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label for="filterTransferDenied">Transfer Denied</label>
+                @Html.CheckBox("filterTransferDenied", ViewBag.FilterTransferDenied, htmlAttributes: new { @class = "form-check" })
+            </div>
+        </div>
+        <div class="col" style="align-self: end; text-align: end;">
+            <button type="submit" style="border: 0; background: transparent">
+                <img src="~/images/More.png" height="20" width="20" title="Filter" />
+            </button>
+            <a asp-action="Routes"
+               asp-route-clearFilters="true">
+                <img src="~/images/Cancel.png" height="20" width="20" title="Clear" />
+            </a>
+        </div>
+    </div>
+</form>
+
+
+<style>
+    #chartdiv {
+        width: 100%;
+        height: 65vh;
+    }
+</style>
+
+
+<div id="chartdiv"></div>
+<a class="btn btn-primary" asp-action="Index">Back</a>
+<script src="~/js/amCharts/core.js"></script>
+<script src="~/js/amCharts/charts.js"></script>
+<script src="~/js/amCharts/themes/sunburst.js"></script>
+<script src="~/js/amCharts/themes/animated.js"></script>
+
+
+<script>
+    var json = '@ViewBag.jsonData';
+    json = json.replaceAll("&quot;", "\"");
+    var data = JSON.parse(json);
+
+    am4core.addLicense('@Constants.licensekey');
+    am4core.ready(function () {
+        am4core.useTheme(am4themes_animated);
+        var chart = am4core.create("chartdiv", am4plugins_sunburst.Sunburst);
+        chart.raduis = am4core.percent(98);
+        chart.innerRadius = am4core.percent(20);
+        chart.data = data;
+
+        chart.dataFields.name = "name";
+        chart.dataFields.children = "children";
+        chart.dataFields.value = "value";
+        
+        var layerChart = new am4plugins_sunburst.SunburstSeries();
+        chart.seriesTemplates.setKey("0", layerChart)
+
+         //hides labels that don't fit. possibly unnecessary
+         layerChart.labels.template.truncate = true;
+         layerChart.labels.template.hideOversized = true;
+         layerChart.showOnInit = false;
+         layerChart.usePercentHack = false;
+
+         //set inside and outside radius (radiuses? radi?)
+         layerChart.radius = am4core.percent(100);
+         layerChart.innerRadius = am4core.percent(0);
+
+        let selectedState = layerChart.states.create('selected');
+        selectedState.properties.opacity = 0.7;
+        layerChart.defaultState.properties.raduis = am4core.percent(100);
+
+        var currentlySelected;
+
+       layerChart.slices.template.events.on('hit', function (event) {
+           zoomOutButton.show();
+
+        var hitSlice = event.target;
+
+        if (hitSlice.dataItem.sunburstDataItem.children) {
+
+              var series = event.target.dataItem.component;
+
+              if (!series.dummyData) {
+                  series.tooltip.disabled = true;
+                  hitSlice.dataItem.label.radius = (hitSlice.radius - hitSlice.pixelInnerRadius) - 7;
+                  hitSlice.dataItem.label.bent = true;
+                  hitSlice.dataItem.label.rotation = -180;
+
+                 currentlySelected = hitSlice;
+                    series.dummyData = true;
+                     series.setState("selected");
+                     hitSlice.dataItem.sunburstDataItem.series.show();
+                     series.slices.each(function (slice) {
+                        if (slice != event.target) {
+                             slice.dataItem.hide();
+                         }
+                     })
+                 }
+                 else {
+                     drillUp(hitSlice);
+                 }
+            
+             }
+
+         })
+
+         layerChart.labels.template.adapter.add("rotation", function (rotation, target) {
+             target.maxWidth = target.dataItem.slice.radius - target.dataItem.slice.innerRadius - 10;
+             target.maxHeight = Math.abs(target.dataItem.slice.arc * (target.dataItem.slice.innerRadius + target.dataItem.slice.radius) / 2 * am4core.math.RADIANS);
+             return rotation;
+         })
+
+        var level1SeriesTemplate = layerChart.clone();
+        level1SeriesTemplate.hidden = true;
+        level1SeriesTemplate.innerRadius = am4core.percent(10);
+        chart.seriesTemplates.setKey("1", level1SeriesTemplate)
+        level1SeriesTemplate.fillOpacity = 0.75;
+     
+        var level2SeriesTemplate = layerChart.clone();
+        level2SeriesTemplate.hidden = true;
+       level2SeriesTemplate.innerRadius = am4core.percent(20);
+        chart.seriesTemplates.setKey("2", level2SeriesTemplate)
+
+         var zoomOutButton = chart.seriesContainer.createChild(am4core.ZoomOutButton);
+         zoomOutButton.visible = false;
+         zoomOutButton.horizontalCenter = "middle";
+         zoomOutButton.verticalCenter = "middle";
+         zoomOutButton.events.on("hit", function () {
+             drillUp(currentlySelected)
+         })
+
+         function drillUp(slice) {
+             collapse(slice);
+             var series = slice.dataItem.component;
+             series.tooltip.disabled = false;
+             series.dummyData = false;
+             series.setState("default");
+
+             series.slices.each(function (slice) {
+                 if (slice != event.target) {
+                     slice.dataItem.show();
+                 }
+             })
+
+             if (series.parentDataItem.seriesDataItem) {
+                 currentlySelected = series.parentDataItem.seriesDataItem.slice;
+             }
+             else {
+                 zoomOutButton.hide();
+             }
+         }
+
+         function collapse(slice) {
+
+             slice.dataItem.label.bent = false;
+             slice.dataItem.label.radius = 10;
+
+
+             if (slice.dataItem.sunburstDataItem.children) {
+                 slice.dataItem.sunburstDataItem.children.each(function (child) {
+                     child.seriesDataItem.component.setState("hidden");
+                     collapse(child.seriesDataItem.slice);
+                 })
+             }
+         }
+
+     });
+
+</script> 
