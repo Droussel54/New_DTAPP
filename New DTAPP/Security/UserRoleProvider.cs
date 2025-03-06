@@ -25,7 +25,7 @@ namespace New_DTAPP.Security
         {
             this.scopeFactory = scopeFactory;
             isDevelopment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == EnvironmentName.Development;
-            AD = new(ContextType.Domain, isDevelopment ? DevLdapUrl : ProdLdapUrl);
+            //AD = new(ContextType.Domain, isDevelopment ? DevLdapUrl : ProdLdapUrl);
         }
 
         public Task<ICollection<string>> GetUserRolesAsync(string userName)

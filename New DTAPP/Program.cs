@@ -20,7 +20,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<NewDtappContext>(options => options.UseSqlServer("name=ConnectionStrings:DefaultConnection"), ServiceLifetime.Transient);
 
 builder.Services.AddAuthentication(IISDefaults.AuthenticationScheme);
-builder.Services.AddJTRoleAuthorization<UserRoleProvider>();
+//builder.Services.AddJTRoleAuthorization<UserRoleProvider>();
 
 builder.Services.AddScoped<IFileRepository, FileRepository>();
 builder.Services.AddScoped<IOperationRepository, OperationRepository>();
