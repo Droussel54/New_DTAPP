@@ -62,7 +62,8 @@ namespace New_DTAPP.Controllers
 
         // GET: Transfers
         public async Task<IActionResult> Index(int? page, string? sortOrder, string? selectedUnit, string? raisedAfter, string? raisedBefore, 
-                                                string? selectedCompletedUser, bool? filterSpillOccurred, bool? filterTransferDenied, string? filtered, string? clearFilters, string? filterClientName)
+                                                string? selectedCompletedUser, bool? filterSpillOccurred, bool? filterTransferDenied, string? filtered, string? clearFilters, 
+                                                string? filterClientName, string? selectedOrigSystem, string? selectedDestSystem)
         {
             string cookieName = "DTAPPFilter"+ GetCurrentUser().Result.Username;
             if (!string.IsNullOrEmpty(clearFilters))
@@ -75,8 +76,12 @@ namespace New_DTAPP.Controllers
             var cookie = Request.Cookies[cookieName];
             if (!string.IsNullOrEmpty(filtered)){
                 Response.Cookies.Append(cookieName  , "{SortOrder:'"+sortOrder+"', SelectedUnit:'"+selectedUnit+ "', RaisedAfter:'"+raisedAfter+ "', RaisedBefore:'"+raisedBefore+
-                                                        "', SelectedCompletedUser:'"+selectedCompletedUser+ "', filterClientName:'"+filterClientName+"', FilterSpillOccurred:'"+filterSpillOccurred+
-                                                        "', FilterTransferDenied:'"+filterTransferDenied+"'}", cookieOptions);
+                                                        "', SelectedCompletedUser:'"+selectedCompletedUser+ 
+                                                        "', filterClientName:'"+filterClientName+
+                                                        "', FilterSpillOccurred:'"+filterSpillOccurred+
+                                                        "', FilterTransferDenied:'"+filterTransferDenied+
+                                                        "', SelectedOrigSystem:'"+selectedOrigSystem+
+                                                        "', SelectedDestSystem:'"+selectedDestSystem+"'}", cookieOptions);
             }
             if (cookie != null && string.IsNullOrEmpty(filtered) && string.IsNullOrEmpty(clearFilters))
             {
@@ -89,18 +94,24 @@ namespace New_DTAPP.Controllers
                 filterSpillOccurred = (bool?)json["FilterSpillOccurred"];
                 filterTransferDenied = (bool?)json["FilterTransferDenied"];
                 filterClientName = (string?)json["filterClientName"];
+                selectedOrigSystem = (string?)json["SelectedOrigSystem"];
+                selectedDestSystem = (string?)json["SelectedDestSystem"];
             }
-                ViewBag.UsernameSortParm = String.IsNullOrEmpty(sortOrder) ? "RequestCreatedAt" : "";
-                ViewData["ClientUnitId"] = new SelectList(await _unitRepository.GetAllUnitsAsync(true, false), "UnitId", "UnitName");
-                ViewBag.SortOrder = sortOrder;
-                ViewBag.SelectedUnit = selectedUnit;
-                ViewBag.RaisedAfter = raisedAfter;
-                ViewBag.RaisedBefore = raisedBefore;
-                ViewBag.SelectedCompletedUser = selectedCompletedUser;
-                ViewBag.FilterSpillOccurred = filterSpillOccurred;
-                ViewBag.FilterTransferDenied = filterTransferDenied;
-                ViewBag.FilterClientName = filterClientName;
-                ViewData["CompletedUserId"] = new SelectList(await _userRepository.GetAllUsersAsync(), "UserId", "Username");
+            ViewBag.UsernameSortParm = String.IsNullOrEmpty(sortOrder) ? "RequestCreatedAt" : "";
+            ViewData["ClientUnitId"] = new SelectList(await _unitRepository.GetAllUnitsAsync(true, false), "UnitId", "UnitName");
+            ViewBag.SortOrder = sortOrder;
+            ViewBag.SelectedUnit = selectedUnit;
+            ViewBag.RaisedAfter = raisedAfter;
+            ViewBag.RaisedBefore = raisedBefore;
+            ViewBag.SelectedCompletedUser = selectedCompletedUser;
+            ViewBag.FilterSpillOccurred = filterSpillOccurred;
+            ViewBag.FilterTransferDenied = filterTransferDenied;
+            ViewBag.FilterClientName = filterClientName;
+            ViewData["OrigSystemId"] = new SelectList(await _systemRepository.GetAllSystemsAsync(true, false), "SystemId", "SystemName");
+            ViewData["DestSystemId"] = new SelectList(await _systemRepository.GetAllSystemsAsync(true, false), "SystemId", "SystemName");
+            ViewBag.SelectedOrigSystem = selectedOrigSystem;
+            ViewBag.SelectedDestSystem = selectedDestSystem;
+            ViewData["CompletedUserId"] = new SelectList(await _userRepository.GetAllUsersAsync(), "UserId", "Username");
             
 
             var transferModel = await _transferRepository.GetAllTransfersAsync();
@@ -140,6 +151,14 @@ namespace New_DTAPP.Controllers
                     q = q.Where(u => u.Urgent == filterTransferDenied.Value);
                 }
 
+            }
+            if (!string.IsNullOrEmpty(selectedOrigSystem))
+            {
+                q = q.Where(u => u.OrigSystemId == Int32.Parse(selectedOrigSystem));
+            }
+            if (!string.IsNullOrEmpty(selectedDestSystem))
+            {
+                q = q.Where(u => u.DestSystemId == Int32.Parse(selectedDestSystem));
             }
             switch (sortOrder)
             {
@@ -247,7 +266,9 @@ namespace New_DTAPP.Controllers
                     selectedCompletedUser = ViewBag.SelectedCompletedUser,
                     filterSpillOccurred = @ViewBag.FilterSpillOccurred,
                     filterTransferDenied = @ViewBag.FilterTransferDenied,
-                    filterClientName = @ViewBag.FilterClientName
+                    filterClientName = @ViewBag.FilterClientName,
+                    selectedOrigSystem = @ViewBag.SelectedOrigSystem,
+                    selectedDestSystem = @ViewBag.SelectedDestSystem
                 }));
             }
             

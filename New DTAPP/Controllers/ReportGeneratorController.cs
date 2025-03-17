@@ -22,7 +22,8 @@ namespace New_DTAPP.Controllers
         }
 
         public async Task<IActionResult> CreateExportReportstring(string? sortOrder, string? selectedUnit, string? raisedAfter, string? raisedBefore,
-                                                string? selectedCompletedUser, bool? filterSpillOccurred, bool? filterTransferDenied, string? filterClientName)
+                                                string? selectedCompletedUser, bool? filterSpillOccurred, bool? filterTransferDenied, string? filterClientName,
+                                                string? selectedOrigSystem, string? selectedDestSystem)
         {
             FileSizeHelper fileSizeHelper = new FileSizeHelper();
             int row = 1;
@@ -65,6 +66,14 @@ namespace New_DTAPP.Controllers
                 {
                     q = q.Where(u => u.Urgent == filterTransferDenied.Value);
                 }
+            }
+            if (!string.IsNullOrEmpty(selectedOrigSystem))
+            {
+                q = q.Where(u => u.OrigSystemId == Int32.Parse(selectedOrigSystem));
+            }
+            if (!string.IsNullOrEmpty(selectedDestSystem))
+            {
+                q = q.Where(u => u.DestSystemId == Int32.Parse(selectedDestSystem));
             }
 
             List<Tuple<string, int>> fileExt = fileSizeHelper.GetFileExtensions(q, column);
