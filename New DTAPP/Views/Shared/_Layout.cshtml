@@ -1,18 +1,18 @@
 ﻿@using static Constants
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - DTAPP</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap-5.3.3/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/lib/jquery-ui/jquery-ui.css" asp-append-version="true" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Transfers" asp-action="Index">DTAPP</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -22,33 +22,39 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Transfers" asp-action="Index">Data Transfer Requests</a>
+                            <a class="nav-link" asp-area="" asp-controller="Transfers" asp-action="Index">Data Transfer Requests</a>
                         </li>
-                        @if (User.IsInRole(Admin) || User.IsInRole(Supervisor))
-                        { 
+                        @* @if (User.IsInRole(Admin) || User.IsInRole(Supervisor))
+                        {  *@
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Operations" asp-action="Index">Operations</a>
+                                <a class="nav-link" asp-area="" asp-controller="Operations" asp-action="Index">Operations</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Systems" asp-action="Index">Systems</a>
+                                <a class="nav-link" asp-area="" asp-controller="Systems" asp-action="Index">Systems</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Units" asp-action="Index">Units</a>
+                                <a class="nav-link" asp-area="" asp-controller="Units" asp-action="Index">Units</a>
                             </li>
-                            @if (User.IsInRole(Admin))
-                            {
+                           @*  @if (User.IsInRole(Admin))
+                            { *@
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="TransferType" asp-action="Index">TransferType</a>
+                                    <a class="nav-link" asp-area="" asp-controller="TransferType" asp-action="Index">TransferType</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Charts" asp-action="Index">Charts</a>
+                                    <a class="nav-link" asp-area="" asp-controller="Charts" asp-action="Index">Charts</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Users</a>
+                                    <a class="nav-link" asp-area="" asp-controller="Users" asp-action="Index">Users</a>
                                 </li>
-                            }
-                        } 
+                        @*     }
+                        }  *@
                     </ul>
+                    <button id="dark-mode-btn" type="button" style="border: 0; background: transparent; user-select: none;" onclick="SetMode('dark')">
+                        <img class="dark-mode" src="~/images/dark-mode.svg" alt="Dark Mode Image" height="30" width="30" title="Dark Mode" />
+                    </button>
+                    <button id="light-mode-btn" type="button" style="border: 0; background: transparent; user-select: none;" onclick="SetMode('light')" hidden>
+                        <img class="light-mode" src="~/images/light-mode.svg" alt="Light Mode Image" height="30" width="30" title="Light Mode" />
+                    </button>
                 </div>
             </div>
         </nav>
@@ -65,6 +71,63 @@
     <script src="~/lib/jquery-ui/jquery-ui.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        const HTMLTAG = document.querySelector("html");
+        const DarkModeBtn = document.getElementById("dark-mode-btn");
+        const LightModeBtn = document.getElementById("light-mode-btn");
+
+        $(document).ready(function() {
+            let AppTheme = getCookie("AppTheme");
+            if (AppTheme != "") {
+                if (AppTheme == "dark") {
+                    SetMode("dark");
+                }
+                else if (AppTheme == "light") {
+                    SetMode("light");
+                }
+            }
+            else {
+                setCookie("AppTheme", "light", 1);
+            }
+        });
+
+        function SetMode(Mode) {
+            setCookie("AppTheme", Mode, 1);
+            HTMLTAG.setAttribute("data-bs-theme", Mode);
+
+            if (Mode == "dark") {
+                DarkModeBtn.setAttribute("hidden", "true");
+                LightModeBtn.removeAttribute("hidden");
+            }
+            else if (Mode == "light") {
+                LightModeBtn.setAttribute("hidden", "true");
+                DarkModeBtn.removeAttribute("hidden");
+            }
+        }
+
+        function setCookie(cname, cvalue, exdays) {
+          const d = new Date();
+          d.setTime(d.getTime() + (exdays*24*60*60*1000));
+          let expires = "expires="+ d.toUTCString();
+          document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        }
+
+        function getCookie(cname) {
+          let name = cname + "=";
+          let decodedCookie = decodeURIComponent(document.cookie);
+          let ca = decodedCookie.split(';');
+          for(let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) == ' ') {
+              c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+              return c.substring(name.length, c.length);
+            }
+          }
+          return "";
+        }
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

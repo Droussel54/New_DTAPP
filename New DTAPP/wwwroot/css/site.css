@@ -62,3 +62,14 @@ body {
     margin-left: 5%;
 }
 
+.dark-mode {
+    filter: invert(58%) sepia(34%) saturate(392%) hue-rotate(216deg) brightness(91%) contrast(88%);
+}
+
+.light-mode {
+    filter: invert(73%) sepia(54%) saturate(498%) hue-rotate(2deg) brightness(97%) contrast(86%);
+}
+
+.dark-mode:hover, .light-mode:hover {
+    filter: invert(80%);
+}
