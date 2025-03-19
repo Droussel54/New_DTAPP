@@ -100,6 +100,24 @@
                         @Html.DropDownList("selectedDestSystem", ViewBag.DestSystemId, "", htmlAttributes: new { @class = "form-select" })
                     </div>
                 </div>
+                <div class="col-1">
+                    <div class="form-group">
+                        <label for="filterCurrentYear">Current Year</label><br />
+                        @Html.CheckBox("filterCurrentYear", ViewBag.FilterCurrentYear, htmlAttributes: new { @class = "form-check-input filterChecks" })
+                    </div>
+                </div>
+                <div class="col-1">
+                    <div class="form-group">
+                        <label for="filterCurrentMonth">Current Month</label><br />
+                        @Html.CheckBox("filterCurrentMonth", ViewBag.FilterCurrentMonth, htmlAttributes: new { @class = "form-check-input filterChecks" })
+                    </div>
+                </div>
+                <div class="col-1">
+                    <div class="form-group">
+                        <label for="filterCurrentWeek">Current Week</label><br />
+                        @Html.CheckBox("filterCurrentWeek", ViewBag.FilterCurrentWeek, htmlAttributes: new { @class = "form-check-input filterChecks" })
+                    </div>
+                </div>
                 <div class="col" style="align-self: end; text-align: end;">
                     <button type="submit" style="border: 0; background: transparent">
                         <img src="~/images/More.png" height="20" width="20" title="Filter" />

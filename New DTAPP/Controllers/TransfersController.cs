@@ -65,7 +65,8 @@ namespace New_DTAPP.Controllers
         // GET: Transfers
         public async Task<IActionResult> Index(int? page, string? sortOrder, string? selectedUnit, string? raisedAfter, string? raisedBefore, 
                                                 string? selectedCompletedUser, bool? filterSpillOccurred, bool? filterTransferDenied, string? filtered, string? clearFilters, 
-                                                string? filterClientName, string? selectedOrigSystem, string? selectedDestSystem)
+                                                string? filterClientName, string? selectedOrigSystem, string? selectedDestSystem, 
+                                                bool? filterCurrentYear, bool? filterCurrentMonth, bool? filterCurrentWeek)
         {
             string cookieName = "DTAPPFilter"+ GetCurrentUser().Result.Username;
             if (!string.IsNullOrEmpty(clearFilters))
@@ -83,7 +84,11 @@ namespace New_DTAPP.Controllers
                                                         "', FilterSpillOccurred:'"+filterSpillOccurred+
                                                         "', FilterTransferDenied:'"+filterTransferDenied+
                                                         "', SelectedOrigSystem:'"+selectedOrigSystem+
-                                                        "', SelectedDestSystem:'"+selectedDestSystem+"'}", cookieOptions);
+                                                        "', SelectedDestSystem:'"+selectedDestSystem+
+                                                        "', FilterCurrentYear:'" + filterCurrentYear +
+                                                        "', FilterCurrentMonth:'" + filterCurrentMonth +
+                                                        "', FilterCurrentWeek:'" + filterCurrentWeek +
+                                                        "'}", cookieOptions);
             }
             if (cookie != null && string.IsNullOrEmpty(filtered) && string.IsNullOrEmpty(clearFilters))
             {
@@ -98,6 +103,9 @@ namespace New_DTAPP.Controllers
                 filterClientName = (string?)json["filterClientName"];
                 selectedOrigSystem = (string?)json["SelectedOrigSystem"];
                 selectedDestSystem = (string?)json["SelectedDestSystem"];
+                filterCurrentYear = (bool?)json["FilterCurrentYear"];
+                filterCurrentMonth = (bool?)json["FilterCurrentMonth"];
+                filterCurrentWeek = (bool?)json["FilterCurrentWeek"];
             }
             ViewBag.UsernameSortParm = String.IsNullOrEmpty(sortOrder) ? "RequestCreatedAt" : "";
             ViewData["ClientUnitId"] = new SelectList(await _unitRepository.GetAllUnitsAsync(true, false), "UnitId", "UnitName");
@@ -113,7 +121,10 @@ namespace New_DTAPP.Controllers
             ViewData["DestSystemId"] = new SelectList(await _systemRepository.GetAllSystemsAsync(true, false), "SystemId", "SystemName");
             ViewBag.SelectedOrigSystem = selectedOrigSystem;
             ViewBag.SelectedDestSystem = selectedDestSystem;
-            ViewData["CompletedUserId"] = new SelectList(await _userRepository.GetAllUsersAsync(), "UserId", "Username");          
+            ViewData["CompletedUserId"] = new SelectList(await _userRepository.GetAllUsersAsync(), "UserId", "Username");
+            ViewBag.FilterCurrentYear = filterCurrentYear;
+            ViewBag.FilterCurrentMonth = filterCurrentMonth;
+            ViewBag.FilterCurrentWeek = filterCurrentWeek;
 
             var transferModel = await _transferRepository.GetAllTransfersAsync();
             var q = transferModel.AsQueryable();
@@ -160,6 +171,29 @@ namespace New_DTAPP.Controllers
             if (!string.IsNullOrEmpty(selectedDestSystem))
             {
                 q = q.Where(u => u.DestSystemId == Int32.Parse(selectedDestSystem));
+            }
+            if (filterCurrentYear.HasValue)
+            {
+                if (filterCurrentYear.Value)
+                {
+                    q = q.Where(u => u.RequestCreatedAt.Year == DateTime.Now.Year);
+                }
+            }
+            if (filterCurrentMonth.HasValue)
+            {
+                if (filterCurrentMonth.Value)
+                {
+                    q = q.Where(u => u.RequestCreatedAt.Month == DateTime.Now.Month);
+                }
+            }
+            if (filterCurrentWeek.HasValue)
+            {
+                if (filterCurrentWeek.Value)
+                {
+                    var dateRangeTo = DateTime.Today.AddDays(1);
+                    var dateRangeFrom = DateTime.Today.AddDays(-7);
+                    q = q.Where(u => u.RequestCreatedAt.Date >= dateRangeFrom && u.RequestCreatedAt.Date < dateRangeTo);
+                }
             }
             switch (sortOrder)
             {
