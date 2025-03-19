@@ -36,11 +36,11 @@
 <form asp-action="Index">
     <input type="hidden" name="filtered" value="ButtonClicked" />
 
-    <button type="button" class="btn btn-outline-secondary btn-lg my-3" data-bs-toggle="collapse" data-bs-target="#collapseFilters" aria-expanded="false" aria-controls="collapseFilters">
+    <button type="button" class="btn btn-outline-secondary btn-lg my-3" onclick="SetFilterOptions()" data-bs-toggle="collapse" data-bs-target="#collapseFilters" aria-expanded="false" aria-controls="collapseFilters">
         <img src="~/images/Details.png" height="20" width="20" alt="Filter Options Image" class="mx-2" />Filters
     </button>
 
-    <div id="collapseFilters" class="collapse show">
+    <div id="collapseFilters" class="Opened collapse show">
         <div class="card card-body">
             <div class="row">
                 <div class="col">
