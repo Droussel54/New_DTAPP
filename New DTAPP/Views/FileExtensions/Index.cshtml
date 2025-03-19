@@ -1,0 +1,41 @@
+﻿@model IEnumerable<New_DTAPP.Models.FileExtensionModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create"><img src="~/images/Add.png" /></a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FileExtensionName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Archived)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FileExtensionName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Archived)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.FileExtensionId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.FileExtensionId">Details</a>
+                <a asp-action="Delete" asp-route-id="@item.FileExtensionId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

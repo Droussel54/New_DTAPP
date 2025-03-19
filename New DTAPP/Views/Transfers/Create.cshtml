@@ -177,12 +177,17 @@
                         <label for="folder" class="btn btn-secondary">Choose folder to transfer</label>
                         <input type="file" id="folder" name="folder" style="display:none" multiple webkitdirectory mozdirectory msdirectory odirectory directory>
                     </div>
-                    <div class="row align-items-center g-0">
-                        <div class="col">                            
-                            <input type="text" id="addExt" placeholder="File Extension (ie pdf)" name="addExt" class="form-control">
+                    <div class="row align-items-center g-0 my-2">
+                        <div class="col">
+                            <select asp-for="FileExtensionModel" asp-items="ViewBag.FileExtensionId" class="form-control" id="addExt" name="addExt">
+                                <option value="" selected disabled>Select a file extension...</option>
+                            </select>
+                            <span asp-validation-for="FileExtensionModel" class="text-danger"></span>
+
+                            @* <input type="text" id="addExt" placeholder="File Extension (ie pdf)" name="addExt" class="form-control"> *@
                         </div>
                         <div class="col col-md-2">
-                            <input type="text" id="addSize" placeholder="0.0" name="addSize" class="form-control">
+                            <input type="number" id="addSize" placeholder="0.0" name="addSize" class="form-control">
                         </div>
                         <div class="col align-self-end col-md-2">
                             <select class="form-select" name="size" id="sizeDropDn">
@@ -221,7 +226,9 @@
             files.addEventListener('change', function () { console.log(files.files); addInputToJsonFileList(files.files); });
             folder.addEventListener('change', function () { addInputToJsonFileList(folder.files); });
             addsingle.addEventListener('click', function (event) {
-                event.preventDefault(); addManualFiletoJsonFileList(document.getElementById('addExt').value, document.getElementById('addSize').value, document.getElementById('sizeDropDn').value);
+                let addExt = document.getElementById('addExt');
+                let fileExt = addExt.options[addExt.selectedIndex].text;
+                event.preventDefault(); addManualFiletoJsonFileList(fileExt, document.getElementById('addSize').value, document.getElementById('sizeDropDn').value);
             });
 
             //added this

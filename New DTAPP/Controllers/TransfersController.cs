@@ -31,12 +31,13 @@ namespace New_DTAPP.Controllers
         private readonly IUnitRepository _unitRepository;
         private readonly IUserRepository _userRepository;
         private readonly ITransferTypeRepository _transferTypeRepository;
+        private readonly IFileExtensionRepository _fileExtensionRepository;
 
         public TransfersController(IFileRepository fileRepository,
                                    IOperationRepository operationRepository, IRoleRepository roleRepository,
                                    ISystemRepository systemRepository, ITransferRepository transferRepository, 
                                    IUnitRepository unitRepository, IUserRepository userRepository, 
-                                   ITransferTypeRepository transferTypeRepository)
+                                   ITransferTypeRepository transferTypeRepository, IFileExtensionRepository fileExtensionRepository)
         {
             _fileRepository = fileRepository;
             _operationRepository = operationRepository;
@@ -46,6 +47,7 @@ namespace New_DTAPP.Controllers
             _unitRepository = unitRepository;
             _userRepository = userRepository;
             _transferTypeRepository = transferTypeRepository;
+            _fileExtensionRepository = fileExtensionRepository;
         }
 
         private async Task<Models.UserModel?> GetCurrentUser()
@@ -111,8 +113,7 @@ namespace New_DTAPP.Controllers
             ViewData["DestSystemId"] = new SelectList(await _systemRepository.GetAllSystemsAsync(true, false), "SystemId", "SystemName");
             ViewBag.SelectedOrigSystem = selectedOrigSystem;
             ViewBag.SelectedDestSystem = selectedDestSystem;
-            ViewData["CompletedUserId"] = new SelectList(await _userRepository.GetAllUsersAsync(), "UserId", "Username");
-            
+            ViewData["CompletedUserId"] = new SelectList(await _userRepository.GetAllUsersAsync(), "UserId", "Username");          
 
             var transferModel = await _transferRepository.GetAllTransfersAsync();
             var q = transferModel.AsQueryable();
@@ -320,6 +321,8 @@ namespace New_DTAPP.Controllers
             ViewData["ReviewedUserId"] = new SelectList(await _userRepository.GetAllUsersAsync(true), "UserId", "Username");
             ViewData["CompletedUserId"] = new SelectList(await _userRepository.GetAllUsersAsync(true), "UserId", "Username", user?.UserId);
             ViewData["TransferTypeId"] = new SelectList(await _transferTypeRepository.GetAllTransferTypeAsync(true), "TransferTypeId","TransferTypeDesc");
+            ViewData["FileExtensionId"] = new SelectList(await _fileExtensionRepository.GetAllFileExtensionsAsync(true, false), "FileExtensionId", "FileExtensionName");
+
             return View();
         }
 

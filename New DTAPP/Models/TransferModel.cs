@@ -104,4 +104,6 @@ public class TransferModel //: IValidatableObject
     public int TransferTypeId { get; set; }
 
     public TransferTypeModel? TransferTypeModel { get; set; }
+
+    public FileExtensionModel? FileExtensionModel { get; set; }
 }

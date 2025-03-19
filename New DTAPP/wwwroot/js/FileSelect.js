@@ -60,7 +60,7 @@ function listFiles(jsonFiles, readOnly) {
         let thFileSent = document.createElement('th');
         thFileSent.textContent = `File Sent`;
         let thFileComment = document.createElement('th');
-        thFileComment.textContent = `Comment`;
+        thFileComment.textContent = `Number of Files`;
 
 
         trHead.appendChild(thNumb);
@@ -131,7 +131,7 @@ function listFiles(jsonFiles, readOnly) {
 
                 let commentInput = document.createElement('input');
 
-                commentInput.type = "text";
+                commentInput.type = "number";
 
                 // console.log('What is this value? ' + file.fileComment);
                 // alert('What is this value? ' + file.fileComment);
@@ -156,7 +156,7 @@ function listFiles(jsonFiles, readOnly) {
             } else {
                 let commentInput = document.createElement('input');
 
-                commentInput.type = "text";
+                commentInput.type = "number";
                 if (file.fileComment === undefined || file.fileComment === null) {
                     commentInput.value = "";
                 }

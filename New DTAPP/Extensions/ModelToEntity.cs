@@ -279,5 +279,35 @@ namespace New_DTAPP.Extensions
             return obj;
         }
         #endregion
+
+        #region FileExtension 
+        public static Data.FileExtension? ModelToEntityFileExtension(this FileExtensionModel item)
+        {
+            if (item == null) return null;
+
+            Data.FileExtension obj = new Data.FileExtension
+            {
+                FileExtensionId = item.FileExtensionId,
+                FileExtensionName = item.FileExtensionName,
+                Archived = item.Archived,
+            };
+
+            return obj;
+        }
+
+        public static List<Data.FileExtension>? ModelToEntityFileExtension(this ICollection<FileExtensionModel> items)
+        {
+            if (items == null) return null;
+
+            List<Data.FileExtension> obj = new List<Data.FileExtension>();
+
+            foreach (var x in items)
+            {
+                obj.Add(x.ModelToEntityFileExtension()!);
+            }
+
+            return obj;
+        }
+        #endregion
     }
 }

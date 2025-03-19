@@ -31,6 +31,8 @@ public partial class NewDtappContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
+    public virtual DbSet<FileExtension> FileExtensions { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<File>(entity =>
@@ -215,6 +217,17 @@ public partial class NewDtappContext : DbContext
                 .HasForeignKey(d => d.RoleId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_user_role");
+        });
+
+        modelBuilder.Entity<FileExtension>(entity =>
+        {
+            entity.ToTable("fileExtension");
+
+            entity.Property(e => e.FileExtensionId).HasColumnName("fileExtension_id");
+            entity.Property(e => e.Archived).HasColumnName("archived");
+            entity.Property(e => e.FileExtensionName)
+                .IsUnicode(false)
+                .HasColumnName("fileExtension_name");
         });
 
         OnModelCreatingPartial(modelBuilder);

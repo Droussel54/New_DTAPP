@@ -26,6 +26,7 @@ builder.Services.AddScoped<IFileRepository, FileRepository>();
 builder.Services.AddScoped<IOperationRepository, OperationRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<ISystemRepository, SystemRepository>();
+builder.Services.AddScoped<IFileExtensionRepository, FileExtensionRepository>();
 
 builder.Services.AddScoped<ITransferRepository, TransferRepository>();
 

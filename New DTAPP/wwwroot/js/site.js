@@ -42,31 +42,33 @@ function SetMode(Mode) {
 }
 
 function SetFilterOptions(Mode) {
-    if (Mode === undefined) {
-        if (FilterOptionsDiv.classList.contains("Opened")) {
-            setCookie("FilterOptions", "hide", 1);
-            FilterOptionsDiv.classList.remove("Opened");
-            FilterOptionsDiv.classList.add("Closed");
+    if (FilterOptionsDiv) {
+        if (Mode === undefined) {
+            if (FilterOptionsDiv.classList.contains("Opened")) {
+                setCookie("FilterOptions", "hide", 1);
+                FilterOptionsDiv.classList.remove("Opened");
+                FilterOptionsDiv.classList.add("Closed");
+            }
+            else {
+                setCookie("FilterOptions", "show", 1);
+                FilterOptionsDiv.classList.remove("Closed");
+                FilterOptionsDiv.classList.add("Opened");
+            }
         }
         else {
-            setCookie("FilterOptions", "show", 1);
-            FilterOptionsDiv.classList.remove("Closed");
-            FilterOptionsDiv.classList.add("Opened");
+            if (Mode == "show") {
+                setCookie("FilterOptions", "show", 1);
+                FilterOptionsDiv.classList.remove("Closed");
+                FilterOptionsDiv.classList.add("Opened");
+            }
+            else if (Mode == "hide") {
+                setCookie("FilterOptions", "hide", 1);
+                FilterOptionsDiv.classList.remove("show");
+                FilterOptionsDiv.classList.remove("Opened");
+                FilterOptionsDiv.classList.add("Closed");
+            }
         }
     }
-    else {
-        if (Mode == "show") {
-            setCookie("FilterOptions", "show", 1);
-            FilterOptionsDiv.classList.remove("Closed");
-            FilterOptionsDiv.classList.add("Opened");
-        }
-        else if (Mode == "hide") {
-            setCookie("FilterOptions", "hide", 1);
-            FilterOptionsDiv.classList.remove("show");
-            FilterOptionsDiv.classList.remove("Opened");
-            FilterOptionsDiv.classList.add("Closed");
-        }
-    }   
 }
 
 function setCookie(cname, cvalue, exdays) {

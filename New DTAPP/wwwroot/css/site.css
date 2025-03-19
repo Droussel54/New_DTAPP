@@ -73,3 +73,13 @@ body {
 .dark-mode:hover, .light-mode:hover {
     filter: invert(80%);
 }
+
+[data-bs-theme=dark] {
+    color-scheme: dark;
+    --bs-body-bg: #292f36;
+}
+
+.filterChecks {
+    height: 30px;
+    width: 30px;
+}
