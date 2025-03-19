@@ -26,28 +26,43 @@
                         </li>
                         @* @if (User.IsInRole(Admin) || User.IsInRole(Supervisor))
                         {  *@
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Operations" asp-action="Index">Operations</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Systems" asp-action="Index">Systems</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Units" asp-action="Index">Units</a>
-                            </li>
-                           @*  @if (User.IsInRole(Admin))
-                            { *@
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-area="" asp-controller="TransferType" asp-action="Index">TransferType</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-area="" asp-controller="Charts" asp-action="Index">Charts</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-area="" asp-controller="Users" asp-action="Index">Users</a>
-                                </li>
-                        @*     }
-                        }  *@
+                            <div class="dropdown mx-3">
+                                <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Admin</button>
+
+                                <ul class="dropdown-menu">
+                                    <li class="nav-item">
+                                        <a class="dropdown-item" asp-area="" asp-controller="Operations" asp-action="Index">Operations</a>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li class="nav-item">
+                                        <a class="dropdown-item" asp-area="" asp-controller="Systems" asp-action="Index">Systems</a>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li class="nav-item">
+                                        <a class="dropdown-item" asp-area="" asp-controller="Units" asp-action="Index">Units</a>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li class="nav-item">
+                                        <a class="dropdown-item" asp-area="" asp-controller="FileExtensions" asp-action="Index">File Extensions</a>
+                                    </li>
+                                    @* @if (User.IsInRole(Admin))
+                                    { *@
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li class="nav-item">
+                                            <a class="dropdown-item" asp-area="" asp-controller="TransferType" asp-action="Index">TransferType</a>
+                                        </li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li class="nav-item">
+                                            <a class="dropdown-item" asp-area="" asp-controller="Charts" asp-action="Index">Charts</a>
+                                        </li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li class="nav-item">
+                                            <a class="dropdown-item" asp-area="" asp-controller="Users" asp-action="Index">Users</a>
+                                        </li>
+                                    @* } *@
+                                </ul>
+                            </div>
+                        @* } *@
                     </ul>
                     <button id="dark-mode-btn" type="button" style="border: 0; background: transparent; user-select: none;" onclick="SetMode('dark')">
                         <img class="dark-mode" src="~/images/dark-mode.svg" alt="Dark Mode Image" height="30" width="30" title="Dark Mode" />
