@@ -30,6 +30,9 @@
             asp-route-filterClientName="@ViewBag.filterClientName"
             asp-route-selectedOrigSystem="@ViewBag.SelectedOrigSystem"
             asp-route-selectedDestSystem="@ViewBag.SelectedDestSystem"
+            asp-route-filterCurrentYear="@ViewBag.FilterCurrentYear"
+            asp-route-filterCurrentMonth="@ViewBag.FilterCurrentMonth"
+            asp-route-filterCurrentWeek="@ViewBag.FilterCurrentWeek"
                style="float:right;"><img src="~/images/draft.png" height="30" width="30" title="Generate Report" /></a>
         @* } *@
     </p>
@@ -670,7 +673,8 @@
                                                                     raisedAfter = ViewBag.RaisedAfter,raisedBefore = ViewBag.RaisedBefore,
                                                                     selectedCompletedUser = ViewBag.SelectedCompletedUser, filterSpillOccurred = @ViewBag.FilterSpillOccurred,
                                                                     filterTransferDenied = @ViewBag.FilterTransferDenied, selectedOrigSystem = ViewBag.SelectedOrigSystem,
-                                                                    selectedDestSystem = ViewBag.SelectedDestSystem
+                                                                    selectedDestSystem = ViewBag.SelectedDestSystem, filterCurrentYear = ViewBag.FilterCurrentYear, 
+                                                                    filterCurrentMonth = ViewBag.FilterCurrentMonth, filterCurrentWeek = ViewBag.FilterCurrentWeek
             }), 
     new X.PagedList.Web.Common.PagedListRenderOptions
 {

@@ -8,6 +8,7 @@ using New_DTAPP.Repository.Interfaces;
 using New_DTAPP.Helpers;
 using static ClosedXML.Excel.XLPredefinedFormat;
 using Tuple = System.Tuple;
+using DateTime = System.DateTime;
 
 namespace New_DTAPP.Controllers
 {
@@ -23,7 +24,8 @@ namespace New_DTAPP.Controllers
 
         public async Task<IActionResult> CreateExportReportstring(string? sortOrder, string? selectedUnit, string? raisedAfter, string? raisedBefore,
                                                 string? selectedCompletedUser, bool? filterSpillOccurred, bool? filterTransferDenied, string? filterClientName,
-                                                string? selectedOrigSystem, string? selectedDestSystem)
+                                                string? selectedOrigSystem, string? selectedDestSystem, 
+                                                bool? filterCurrentYear, bool? filterCurrentMonth, bool? filterCurrentWeek)
         {
             FileSizeHelper fileSizeHelper = new FileSizeHelper();
             int row = 1;
@@ -74,6 +76,29 @@ namespace New_DTAPP.Controllers
             if (!string.IsNullOrEmpty(selectedDestSystem))
             {
                 q = q.Where(u => u.DestSystemId == Int32.Parse(selectedDestSystem));
+            }
+            if (filterCurrentYear.HasValue)
+            {
+                if (filterCurrentYear.Value)
+                {
+                    q = q.Where(u => u.RequestCreatedAt.Year == DateTime.Now.Year);
+                }
+            }
+            if (filterCurrentMonth.HasValue)
+            {
+                if (filterCurrentMonth.Value)
+                {
+                    q = q.Where(u => u.RequestCreatedAt.Month == DateTime.Now.Month);
+                }
+            }
+            if (filterCurrentWeek.HasValue)
+            {
+                if (filterCurrentWeek.Value)
+                {
+                    var dateRangeTo = DateTime.Today.AddDays(1);
+                    var dateRangeFrom = DateTime.Today.AddDays(-7);
+                    q = q.Where(u => u.RequestCreatedAt.Date >= dateRangeFrom && u.RequestCreatedAt.Date < dateRangeTo);
+                }
             }
 
             List<Tuple<string, int>> fileExt = fileSizeHelper.GetFileExtensions(q, column);
