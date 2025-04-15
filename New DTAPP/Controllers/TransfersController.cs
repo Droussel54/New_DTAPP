@@ -32,12 +32,13 @@ namespace New_DTAPP.Controllers
         private readonly IUserRepository _userRepository;
         private readonly ITransferTypeRepository _transferTypeRepository;
         private readonly IFileExtensionRepository _fileExtensionRepository;
+        private readonly ISpillRepository _spillRepository;
 
         public TransfersController(IFileRepository fileRepository,
                                    IOperationRepository operationRepository, IRoleRepository roleRepository,
                                    ISystemRepository systemRepository, ITransferRepository transferRepository, 
                                    IUnitRepository unitRepository, IUserRepository userRepository, 
-                                   ITransferTypeRepository transferTypeRepository, IFileExtensionRepository fileExtensionRepository)
+                                   ITransferTypeRepository transferTypeRepository, IFileExtensionRepository fileExtensionRepository, ISpillRepository spillRepository)
         {
             _fileRepository = fileRepository;
             _operationRepository = operationRepository;
@@ -48,6 +49,7 @@ namespace New_DTAPP.Controllers
             _userRepository = userRepository;
             _transferTypeRepository = transferTypeRepository;
             _fileExtensionRepository = fileExtensionRepository;
+            _spillRepository = spillRepository;
         }
 
         private async Task<Models.UserModel?> GetCurrentUser()
@@ -125,6 +127,7 @@ namespace New_DTAPP.Controllers
             ViewBag.FilterCurrentYear = filterCurrentYear;
             ViewBag.FilterCurrentMonth = filterCurrentMonth;
             ViewBag.FilterCurrentWeek = filterCurrentWeek;
+            ViewData["SpillId"] = new SelectList(await _spillRepository.GetAllSpillsAsync(), "SpillId", "SpillId");
 
             var transferModel = await _transferRepository.GetAllTransfersAsync();
             var q = transferModel.AsQueryable();
@@ -367,7 +370,7 @@ namespace New_DTAPP.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("TransferId,RequestCreatedAt,SentTime,ClientName,ClientUnitId,OperationId,OrigSystemId,DestSystemId,IssoApproval,IssueReported" +
-            ",SpillPrevented,SpillOccurred,Comments,CompletedUserId,ReviewedUserId,ReviewedAt,CompletedAt,Urgent,Reviewed,Completed,TransferTypeId")] Models.TransferModel transfer, string fileList)
+            ",SpillPrevented,SpillOccurred,SpillId,Comments,CompletedUserId,ReviewedUserId,ReviewedAt,CompletedAt,Urgent,Reviewed,Completed,TransferTypeId")] Models.TransferModel transfer, string fileList)
         {
 
             ICollection<Models.FileModel> fileListCollection;
@@ -490,6 +493,7 @@ namespace New_DTAPP.Controllers
             ViewData["OrigSystemId"] = new SelectList(await _systemRepository.GetAllSystemsAsync(true), "SystemId", "SystemName");
             ViewData["ReviewedUserId"] = new SelectList(await _userRepository.GetAllUsersAsync(), "UserId", "Username");
             ViewData["TransferTypeId"] = new SelectList(await _transferTypeRepository.GetAllTransferTypeAsync(false), "TransferTypeId", "TransferTypeDesc");
+            ViewData["FileExtensionId"] = new SelectList(await _fileExtensionRepository.GetAllFileExtensionsAsync(true, false), "FileExtensionId", "FileExtensionName");
 
             return View(transfer);
         }
@@ -500,7 +504,7 @@ namespace New_DTAPP.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("TransferId,RequestCreatedAt,SentTime,ClientName,ClientUnitId,OperationId,OrigSystemId,DestSystemId,IssoApproval,IssueReported" +
-            ",SpillPrevented,SpillOccurred,Comments,CompletedUserId,ReviewedUserId,ReviewedAt,CompletedAt,Urgent,Reviewed,Completed,TransferTypeId")] Models.TransferModel transfer, string fileList)
+            ",SpillPrevented,SpillOccurred,SpillId,Comments,CompletedUserId,ReviewedUserId,ReviewedAt,CompletedAt,Urgent,Reviewed,Completed,TransferTypeId")] Models.TransferModel transfer, string fileList)
         {
             ICollection<Models.FileModel> fileListCollection;
             List<FileModel> filesToRemove = new();
@@ -581,6 +585,7 @@ namespace New_DTAPP.Controllers
             ViewData["ReviewedUserId"] = new SelectList(await _userRepository.GetAllUsersAsync(), "UserId", "Username");
             ViewData["CompletedUserId"] = new SelectList(await _userRepository.GetAllUsersAsync(), "UserId", "Username");
             ViewData["TransferTypeId"] = new SelectList(await _transferTypeRepository.GetAllTransferTypeAsync(false), "TransferTypeId", "TransferTypeDesc");
+            ViewData["SpillId"] = new SelectList(await _spillRepository.GetAllSpillsAsync(), "SpillId", "SpillId");
         }
 
         // GET: Transfers/Delete/5
@@ -606,12 +611,18 @@ namespace New_DTAPP.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var transfer = await _transferRepository.GetTransferByIdAsync(id);
+            var spill = await _spillRepository.GetSpillByTransferId(id);
 
             if (transfer != null)
-            { 
+            {
+                if (spill != null)
+                {
+                    await _spillRepository.RemoveSpillAsync(spill);
+                    await _transferRepository.UpdateSpillIdForTransferAsync(transfer.TransferId, 0);
+                }
+
                 await _fileRepository.RemoveFilesByTransferIdAsync(id);
                 await _transferRepository.RemoveTransferAsync(transfer);
-
             }
             return RedirectToAction(nameof(Index));
         }

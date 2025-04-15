@@ -31,7 +31,7 @@ public class TransferModel //: IValidatableObject
     [DisplayFormat(DataFormatString = "{0:yyy/MM/dd HH:mm}")]
     public DateTime? SentTime { get; set; }
 
-    [ValidateRequiredDropDownsAndTextFields(FieldValidationType.RequiredFieldString, ErrorMessage = "Client Name is a required.")]
+    [ValidateRequiredDropDownsAndTextFields(FieldValidationType.RequiredFieldString, ErrorMessage = "Client Name is required.")]
     public string? ClientName { get; set; }
 
     [ValidateRequiredDropDownsAndTextFields(FieldValidationType.RequiredFieldInt, ErrorMessage = "Client Unit is required.")]
@@ -52,6 +52,8 @@ public class TransferModel //: IValidatableObject
     public bool SpillPrevented { get; set; }
 
     public bool SpillOccurred { get; set; }
+
+    public int? SpillId { get; set; }
 
     public string? Comments { get; set; }
 
@@ -106,4 +108,6 @@ public class TransferModel //: IValidatableObject
     public TransferTypeModel? TransferTypeModel { get; set; }
 
     public FileExtensionModel? FileExtensionModel { get; set; }
+
+    public SpillModel? Spill { get; set; }
 }

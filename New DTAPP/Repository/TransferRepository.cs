@@ -37,7 +37,7 @@ namespace New_DTAPP.Repository
             return transferModel;
         }
 
-        public async Task<List<TransferModel>> GetAllTransfersAsync()  
+        public async Task<List<TransferModel>> GetAllTransfersAsync()
         {
             List<TransferModel> transferModel = new();
 
@@ -50,6 +50,7 @@ namespace New_DTAPP.Repository
                .Include(t => t.ReviewedUser)
                .Include(t => t.Files)
                .Include(t => t.TransferType)
+               .Include(t => t.Spill)
                .AsNoTracking().ToListAsync();
 
             transferModel = transfers?.EntityToModelTransfer()!;
@@ -144,6 +145,25 @@ namespace New_DTAPP.Repository
         public async Task<bool> ExistsAsync(int id)
         {
             return await _context.Transfers.AnyAsync(t => t.TransferId == id);
+        }
+
+        public async Task UpdateSpillIdForTransferAsync(int transferId, int spillId)
+        {
+            var transfer = await _context.Transfers.FirstOrDefaultAsync(t => t.TransferId == transferId);
+
+            if (transfer != null)
+            {
+                if (spillId == 0)
+                {
+                    transfer.SpillId = null;
+                }
+                else
+                {
+                    transfer.SpillId = spillId;
+                }
+                
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

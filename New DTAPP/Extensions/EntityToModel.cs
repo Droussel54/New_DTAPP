@@ -153,6 +153,8 @@ namespace New_DTAPP.Extensions
                 IssueReported = item.IssueReported,
                 SpillPrevented = item.SpillPrevented,
                 SpillOccurred = item.SpillOccurred,
+                SpillId = item.SpillId,
+                Spill = item.Spill == null ? null : item.Spill.EntityToModelSpill(),
                 Comments = item.Comments,
                 Urgent = item.Urgent,
                 Reviewed = item.Reviewed,
@@ -308,6 +310,56 @@ namespace New_DTAPP.Extensions
             foreach (var x in items)
             {
                 obj.Add(x.EntityToModelFileExtension()!);
+            }
+
+            return obj;
+        }
+        #endregion
+
+        #region Spill
+        public static SpillModel? EntityToModelSpill(this Spill item)
+        {
+            if (item == null) return null;
+
+            SpillModel obj = new SpillModel()
+            {
+                SpillId = item.SpillId,
+                BurnedAndAnnotated = item.BurnedAndAnnotated,
+                IssoInformed = item.IssoInformed,
+                ManagerInformed = item.ManagerInformed,
+                NatureOfSpill = item.NatureOfSpill,
+                TransferRequestCompleted = item.TransferRequestCompleted,
+                EmailTripleDeleted = item.EmailTripleDeleted,
+                ClientInformed = item.ClientInformed,
+                ConsiderationPowerDown = item.ConsiderationPowerDown,
+                CDSent = item.CDSent,
+                DateOfSpill = item.DateOfSpill,
+                TimeOfSpill = item.TimeOfSpill,
+                TimeIdentifiedSpill = item.TimeIdentifiedSpill,
+                TimeReported = item.TimeReported,
+                WorkstationAffected = item.WorkstationAffected,
+                WorkstationAssetNumber = item.WorkstationAssetNumber,
+                SpecialistId = item.SpecialistId,
+                SpecialistUser = item.SpecialistUser.EntityToModelUser(),
+                ReviewerId = item.ReviewerId,
+                ReviewerUser = item.ReviewerUser.EntityToModelUser(),
+                SystemsInvolved = item.SystemsInvolved,
+                TransferId = item.TransferId,
+                Transfer = item.Transfer.EntityToModelTransfer(),
+            };
+
+            return obj;
+        }
+
+        public static List<SpillModel>? EntityToModelSpill(this ICollection<Spill> items)
+        {
+            if (items == null) return null;
+
+            List<SpillModel> obj = new List<SpillModel>();
+
+            foreach (var x in items)
+            {
+                obj.Add(x.EntityToModelSpill()!);
             }
 
             return obj;

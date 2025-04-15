@@ -29,6 +29,8 @@ public partial class Transfer
 
     public bool SpillOccurred { get; set; }
 
+    public int? SpillId { get; set; }
+
     public string? Comments { get; set; }
 
     public bool Urgent { get; set; }
@@ -65,4 +67,7 @@ public partial class Transfer
     public virtual User? ReviewedUser { get; set; }
 
     public virtual TransferType TransferType { get; set; }
+
+    public virtual Spill? Spill { get; set; }
+    public virtual ICollection<Spill> SpillTransfers { get; set; } = new List<Spill>();
 }

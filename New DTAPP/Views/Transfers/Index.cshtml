@@ -650,7 +650,15 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.SpillOccurred)
+                @if (item.SpillOccurred && item.SpillId != null)
+                {
+                    <a target="_blank" asp-controller="Spills" asp-action="Details" asp-route-id="@item.Spill!.SpillId"><img src="~/images/box-arrow-up-right.svg" alt="Link to Spill" height="20" width="20" title="View Spill" style="margin-left: 25px;" /></a>
+                }
+                else if (item.SpillOccurred && item.SpillId == null) {
+                    <a target="_blank" asp-controller="Spills" asp-action="Create" asp-route-transferId="@item.TransferId"><img src="~/images/Add.png" alt="Create a Spill" height="20" width="20" title="Create Spill" style="margin-left: 25px;" /></a>
+                }
             </td>
+                
             <td>
                 @Html.DisplayFor(modelItem => item.Files.Count)
             </td>

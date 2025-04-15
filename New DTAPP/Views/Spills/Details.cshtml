@@ -1,0 +1,153 @@
+﻿@model New_DTAPP.Models.SpillModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<h4>Spill</h4>
+<hr />
+<div class="row">
+    <div class="col">
+        <dl class="row">
+            <dt class="col-sm-4">
+                Transfer ID
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.TransferId)
+            </dd>
+            <dt class="col-sm-4">
+                ISSO Informed
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.IssoInformed)
+            </dd>
+            <dt class="col-sm-4">
+                Manager Informed
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.ManagerInformed)
+            </dd>
+            <dt class="col-sm-4">
+                Nature of Spill
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.NatureOfSpill)
+            </dd>
+            <div class="row">
+                <div class="col-sm-4">
+                    <dd style="float:left">
+                        @Html.DisplayFor(model => model.BurnedAndAnnotated)
+                    </dd>
+                    <dt style="padding: 0 0 0 1em;">
+                        Burned and Annotated
+                    </dt>
+                </div>
+                <div class="col-sm-4">
+                    <dd style="float:left">
+                        @Html.DisplayFor(model => model.TransferRequestCompleted)
+                    </dd>
+                    <dt style="padding: 0 0 0 1em;">
+                        Transfer Request Completed
+                    </dt>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <dd style="float:left">
+                        @Html.DisplayFor(model => model.EmailTripleDeleted)
+                    </dd>
+                    <dt style="padding: 0 0 0 1em;">
+                        Email Triple Deleted
+                    </dt>
+                </div>
+                <div class="col-sm-4">
+                    <dd style="float:left">
+                        @Html.DisplayFor(model => model.ClientInformed)
+                    </dd>
+                    <dt style="padding: 0 0 0 1em;">
+                        Client Informed
+                    </dt>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <dd style="float:left">
+                        @Html.DisplayFor(model => model.ConsiderationPowerDown)
+                    </dd>
+                    <dt style="padding: 0 0 0 1em;">
+                        Consideration Power Down
+                    </dt>
+                </div>
+                <div class="col-sm-4">
+                    <dd style="float:left">
+                        @Html.DisplayFor(model => model.CDSent)
+                    </dd>
+                    <dt style="padding: 0 0 0 1em;">
+                        CD Sent
+                    </dt>
+                </div>
+            </div>
+            <dt class="col-sm-4">
+                Date of Spill
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.DateOfSpill)
+            </dd>
+            <dt class="col-sm-4">
+                Time of Spill
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.TimeOfSpill)
+            </dd>
+            <dt class="col-sm-4">
+                Time Identified as Spill
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.TimeIdentifiedSpill)
+            </dd>
+            <dt class="col-sm-4">
+                Time Reported to ISSO
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.TimeReported)
+            </dd>
+            <dt class="col-sm-4">
+                Workstation Affected
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.WorkstationAffected)
+            </dd>
+            <dt class="col-sm-4">
+                Workstation Asset Number
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.WorkstationAssetNumber)
+            </dd>
+            <dt class="col-sm-4">
+                Specialist User Name
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.SpecialistUser!.Username)
+            </dd>
+            <dt class="col-sm-4">
+                Reviewer User Name
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.ReviewerUser!.Username)
+            </dd>
+            <dt class="col-sm-4">
+                Systems Involved
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.SystemsInvolved)
+            </dd>
+        </dl>
+    </div>
+</div>
+
+<div>
+    <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.SpillId">Edit</a> |
+    <a class="btn btn-primary" asp-action="Index">Back</a>
+</div>

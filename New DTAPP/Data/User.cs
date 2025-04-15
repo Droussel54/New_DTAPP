@@ -28,4 +28,7 @@ public partial class User
     public virtual ICollection<Transfer> TransferCompletedUsers { get; set; } = new List<Transfer>();
 
     public virtual ICollection<Transfer> TransferReviewedUsers { get; set; } = new List<Transfer>();
+
+    public virtual ICollection<Spill> SpillCompletedUsers { get; set; } = new List<Spill>();
+    public virtual ICollection<Spill> SpillReviewedUsers { get; set; } = new List<Spill>();
 }

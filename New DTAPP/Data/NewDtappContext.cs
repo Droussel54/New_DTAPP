@@ -33,6 +33,8 @@ public partial class NewDtappContext : DbContext
 
     public virtual DbSet<FileExtension> FileExtensions { get; set; }
 
+    public virtual DbSet<Spill> Spills { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<File>(entity =>
@@ -141,6 +143,7 @@ public partial class NewDtappContext : DbContext
                 .HasColumnName("sent_time");
             entity.Property(e => e.SpillOccurred).HasColumnName("spill_occurred");
             entity.Property(e => e.SpillPrevented).HasColumnName("spill_prevented");
+            entity.Property(e => e.SpillId).HasColumnName("spill_id");
             entity.Property(e => e.Urgent).HasColumnName("urgent");
             entity.Property(e => e.VirusDefinitionDate)
                 .HasColumnType("datetime")
@@ -173,6 +176,11 @@ public partial class NewDtappContext : DbContext
             entity.HasOne(d => d.ReviewedUser).WithMany(p => p.TransferReviewedUsers)
                 .HasForeignKey(d => d.ReviewedUserId)
                 .HasConstraintName("FK_transfer_user1");
+
+            entity.HasOne(d => d.Spill).WithMany(p => p.TransferSpills);
+            //    .HasForeignKey(d => d.SpillId)
+            //    .HasConstraintName("FK_spill");
+
         });
 
         modelBuilder.Entity<Unit>(entity =>
@@ -228,6 +236,64 @@ public partial class NewDtappContext : DbContext
             entity.Property(e => e.FileExtensionName)
                 .IsUnicode(false)
                 .HasColumnName("fileExtension_name");
+        });
+
+        modelBuilder.Entity<Spill>(entity =>
+        {
+            entity.ToTable("spill");
+            
+            entity.Property(e => e.SpillId).HasColumnName("spill_id");
+            entity.Property(e => e.BurnedAndAnnotated).HasColumnName("burned_and_annotated");
+            entity.Property(e => e.IssoInformed)
+                .HasColumnType("datetime")
+                .HasColumnName("isso_informed");
+            entity.Property(e => e.ManagerInformed)
+                .HasColumnType("datetime")
+                .HasColumnName("manager_informed");
+            entity.Property(e => e.NatureOfSpill)
+                .IsUnicode(false)
+                .HasColumnName("nature_of_spill");
+            entity.Property(e => e.TransferRequestCompleted).HasColumnName("transfer_request_completed");
+            entity.Property(e => e.EmailTripleDeleted).HasColumnName("email_triple_deleted");
+            entity.Property(e => e.ClientInformed).HasColumnName("client_informed");
+            entity.Property(e => e.ConsiderationPowerDown).HasColumnName("consideration_power_down");
+            entity.Property(e => e.CDSent).HasColumnName("cdsent");
+            entity.Property(e => e.DateOfSpill)
+                .HasColumnType("datetime")
+                .HasColumnName("date_of_spill");
+            entity.Property(e => e.TimeOfSpill)
+                .HasColumnType("datetime")
+                .HasColumnName("time_of_spill");
+            entity.Property(e => e.TimeIdentifiedSpill)
+                .HasColumnType("datetime")
+                .HasColumnName("time_identified_spill");
+            entity.Property(e => e.TimeReported)
+                .HasColumnType("datetime")
+                .HasColumnName("time_reported");
+            entity.Property(e => e.WorkstationAffected)
+                .IsUnicode(false)
+                .HasColumnName("workstation_affected");
+            entity.Property(e => e.WorkstationAssetNumber)
+                .IsUnicode(false)
+                .HasColumnName("workstation_asset_number");
+            entity.Property(e => e.SpecialistId).HasColumnName("specialist_id");
+            entity.Property(e => e.ReviewerId).HasColumnName("reviewer_id");
+            entity.Property(e => e.SystemsInvolved)
+                .IsUnicode(false)
+                .HasColumnName("systems_involved");
+            entity.Property(e => e.TransferId).HasColumnName("transfer_id");
+
+            entity.HasOne(d => d.SpecialistUser).WithMany(p => p.SpillCompletedUsers)
+                .HasForeignKey(d => d.SpecialistId)
+                .HasConstraintName("FK_spill2");
+
+            entity.HasOne(d => d.ReviewerUser).WithMany(p => p.SpillReviewedUsers)
+                .HasForeignKey(d => d.ReviewerId)
+                .HasConstraintName("FK_spill3");
+
+            entity.HasOne(d => d.Transfer).WithMany(p => p.SpillTransfers);
+            //    .HasForeignKey(d => d.TransferId)
+            //    .HasConstraintName("FK_Spill1");
         });
 
         OnModelCreatingPartial(modelBuilder);

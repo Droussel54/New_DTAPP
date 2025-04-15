@@ -10,5 +10,6 @@ namespace New_DTAPP.Repository.Interfaces
         TransferModel UpdateTransfer(TransferModel model);
         Task<TransferModel> RemoveTransferAsync(TransferModel model);
         Task<bool> ExistsAsync(int id);
+        Task UpdateSpillIdForTransferAsync(int transferId, int spillId);
     }
 }
