@@ -324,6 +324,8 @@ namespace New_DTAPP.Extensions
             SpillModel obj = new SpillModel()
             {
                 SpillId = item.SpillId,
+                CFNOCIncidentNumber = item.CFNOCIncidentNumber,
+                DGDSSIMIncidentNumber = item.DGDSSIMIncidentNumber,
                 BurnedAndAnnotated = item.BurnedAndAnnotated,
                 IssoInformed = item.IssoInformed,
                 ManagerInformed = item.ManagerInformed,
@@ -343,9 +345,14 @@ namespace New_DTAPP.Extensions
                 SpecialistUser = item.SpecialistUser.EntityToModelUser(),
                 ReviewerId = item.ReviewerId,
                 ReviewerUser = item.ReviewerUser.EntityToModelUser(),
-                SystemsInvolved = item.SystemsInvolved,
+                OrigSystemId = item.OrigSystemId,
+                OrigSystem = item.OrigSystem.EntityToModelSystem(),
+                DestSystemId = item.DestSystemId,
+                DestSystem = item.DestSystem.EntityToModelSystem(),
                 TransferId = item.TransferId,
                 Transfer = item.Transfer.EntityToModelTransfer(),
+                SpillStatusId = item.SpillStatusId,
+                SpillStatus = item.SpillStatus.EntityToModelSpillStatus()
             };
 
             return obj;
@@ -360,6 +367,36 @@ namespace New_DTAPP.Extensions
             foreach (var x in items)
             {
                 obj.Add(x.EntityToModelSpill()!);
+            }
+
+            return obj;
+        }
+        #endregion
+
+        #region SpillStatus
+        public static SpillStatusModel? EntityToModelSpillStatus(this SpillStatus item)
+        {
+            if (item == null) return null;
+
+            SpillStatusModel obj = new SpillStatusModel()
+            {
+                SpillStatusId = item.SpillStatusId,
+                SpillStatusDesc = item.SpillStatusDesc,
+                Archived = item.Archived,
+            };
+
+            return obj;
+        }
+
+        public static List<SpillStatusModel>? EntityToModelSpillStatus(this ICollection<SpillStatus> items)
+        {
+            if (items == null) return null;
+
+            List<SpillStatusModel> obj = new List<SpillStatusModel>();
+
+            foreach (var x in items)
+            {
+                obj.Add(x.EntityToModelSpillStatus()!);
             }
 
             return obj;

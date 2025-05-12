@@ -3,6 +3,9 @@
 public class Spill
 {
     public int SpillId { get; set; }
+    public int? SpillStatusId { get; set; }
+    public string? CFNOCIncidentNumber { get; set; }
+    public string? DGDSSIMIncidentNumber { get; set; }
     public bool BurnedAndAnnotated { get; set; }
     public DateTime? IssoInformed { get; set; }
     public DateTime? ManagerInformed { get; set; }
@@ -20,12 +23,16 @@ public class Spill
     public string? WorkstationAssetNumber { get; set; }
     public int SpecialistId { get; set; }
     public int? ReviewerId { get; set; }
-    public string? SystemsInvolved { get; set; }
+    public int? OrigSystemId { get; set; }
+    public int? DestSystemId { get; set; }
     public int TransferId { get; set; }
 
+    public virtual SpillStatus? SpillStatus { get; set; }
     public virtual User? SpecialistUser { get; set; }
     public virtual User? ReviewerUser { get; set; }
     public virtual Transfer? Transfer { get; set; }
+    public virtual System? OrigSystem { get; set; } = null!;
+    public virtual System? DestSystem { get; set; } = null!;
 
     public virtual ICollection<Transfer> TransferSpills { get; set; } = new List<Transfer>();
 }

@@ -12,10 +12,31 @@
     <div class="col">
         <dl class="row">
             <dt class="col-sm-4">
-                Transfer ID
+                Transfer Request ID
             </dt>
             <dd class="col-sm-8">
                 @Html.DisplayFor(model => model.TransferId)
+                <a target="_blank" asp-controller="Transfers" asp-action="Details" asp-route-id="@Model.TransferId">
+                    <img src="~/images/box-arrow-up-right.svg" alt="Link to Transfer Image" height="20" width="20" title="View Transfer" />
+                </a>
+            </dd>
+            <dt class="col-sm-4">
+                Spill Status
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.SpillStatus.SpillStatusDesc)
+            </dd>
+            <dt class="col-sm-4">
+                CFNOC Incident #
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.CFNOCIncidentNumber)
+            </dd>
+            <dt class="col-sm-4">
+                DGDS SIM Incident #
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.DGDSSIMIncidentNumber)
             </dd>
             <dt class="col-sm-4">
                 ISSO Informed
@@ -138,10 +159,16 @@
                 @Html.DisplayFor(model => model.ReviewerUser!.Username)
             </dd>
             <dt class="col-sm-4">
-                Systems Involved
+                Originating System
             </dt>
             <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.SystemsInvolved)
+                @Html.DisplayFor(model => model.OrigSystem!.SystemName)
+            </dd>
+            <dt class="col-sm-4">
+                Destination System
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.DestSystem!.SystemName)
             </dd>
         </dl>
     </div>

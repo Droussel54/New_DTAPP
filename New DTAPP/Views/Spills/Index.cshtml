@@ -1,4 +1,9 @@
-﻿@model IEnumerable<New_DTAPP.Models.SpillModel>
+﻿@using static Constants
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Web
+
+@model IPagedList<New_DTAPP.Models.SpillModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -12,138 +17,286 @@
     <p>
         <a asp-action="Create"><img src="~/images/Add.png" /></a>
     </p>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    Burned and Annotated
-                </th>
-                <th>
-                    ISSO Informed
-                </th>
-                <th>
-                    Manager Informed
-                </th>
-                <th>
-                    Nature of Spill
-                </th>
-                <th>
-                    Transfer Request Completed
-                </th>
-                <th>
-                    Email Triple Deleted
-                </th>
-                <th>
-                    Client Informed
-                </th>
-                <th>
-                    Consideration Power Down
-                </th>
-                <th>
-                    CD Sent
-                </th>
-                <th>
-                    Date of Spill
-                </th>
-                <th>
-                    Time Of Spill
-                </th>
-                <th>
-                    Time Identified as Spill
-                </th>
-                <th>
-                    Time Reported to ISSO
-                </th>
-                <th>
-                    Workstation Affected
-                </th>
-                <th>
-                    Workstation Asset Number
-                </th>
-                <th>
-                    Completed User
-                </th>
-                <th>
-                    Reviewed User
-                </th>
-                <th>
-                    Systems Involved
-                </th>
-                <th>
-                    Transfer Request
-                </th>
-                <th style="min-width: 11rem;"></th>
-            </tr>
-        </thead>
-        <tbody>
-    @foreach (var item in Model) {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.BurnedAndAnnotated)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IssoInformed)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ManagerInformed)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NatureOfSpill)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TransferRequestCompleted)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EmailTripleDeleted)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ClientInformed)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ConsiderationPowerDown)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CDSent)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DateOfSpill)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TimeOfSpill)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TimeIdentifiedSpill)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TimeReported)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.WorkstationAffected)
-                </td> 
-                <td>
-                    @Html.DisplayFor(modelItem => item.WorkstationAssetNumber)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SpecialistUser!.Username)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ReviewerUser!.Username)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SystemsInvolved)
-                </td>
-                <td>
-                    <a target="_blank" asp-controller="Transfers" asp-action="Details" asp-route-id="@item.TransferId"><img src="~/images/box-arrow-up-right.svg" alt="Link to Transfer Image" height="20" width="20" title="View Transfer" style="margin-left: 20px;" /></a>
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.SpillId"><img src="~/images/Edit.png" height="20" width="20" title="Edit" /></a>
-                    <a asp-action="Details" asp-route-id="@item.SpillId"><img src="~/images/Details.png" height="20" width="20" title="Details" /></a>
-                    <a asp-action="Delete" asp-route-id="@item.SpillId"><img src="~/images/Delete.png" height="20" width="20" title="Delete" /></a>
-                </td>
-            </tr>
-    }
-        </tbody>
-    </table>
+
+    <form asp-action="Index">
+        <input type="hidden" name="filtered" value="ButtonClicked" />
+
+        <button type="button" class="btn btn-outline-secondary btn-lg my-3" onclick="SetFilterOptions()" data-bs-toggle="collapse" data-bs-target="#collapseFilters" aria-expanded="false" aria-controls="collapseFilters">
+            <img src="~/images/Details.png" height="20" width="20" alt="Filter Options Image" class="mx-2" />Filters
+        </button>
+
+        <div id="collapseFilters" class="Opened collapse show">
+            <div class="card card-body">
+                <div class="row">
+                    <div class="col-2">
+                        <div class="form-group">
+                            <label for="selectedUnit">Spill Status</label>
+                            @Html.DropDownList("selectedSpillStatus", ViewBag.SpillStatusId, "", htmlAttributes: new { @class = "form-select" })
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div class="form-group">
+                            <label for="selectedCompletedUser">Completed User</label>
+                            @Html.DropDownList("selectedCompletedUser", ViewBag.CompletedUserId, "", htmlAttributes: new { @class = "form-select" })
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div class="form-group">
+                            <label for="selectedOrigSystem">Originating System</label>
+                            @Html.DropDownList("selectedOrigSystem", ViewBag.OrigSystemId, "", htmlAttributes: new { @class = "form-select" })
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div class="form-group">
+                            <label for="selectedDestinationSystem">Destination System</label>
+                            @Html.DropDownList("selectedDestSystem", ViewBag.DestSystemId, "", htmlAttributes: new { @class = "form-select" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row my-2">
+                    <div class="col-2">
+                        <div class="form-group">
+                            <label for="raisedAfter">Raised After:</label>
+                            @Html.TextBox("raisedAfter", ViewBag.RaisedAfter, "", htmlAttributes: new { @class = "datefield form-select", type = "datetime-local" })
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div class="form-group">
+                            <label for="raisedBefore">Raised Before:</label>
+                            @Html.TextBox("raisedBefore", ViewBag.RaisedBefore, "", htmlAttributes: new { @class = "datefield form-select", type = "datetime-local" })
+                        </div>
+                    </div>
+                    <div class="col-1">
+                        <div class="form-group">
+                            <label for="filterCurrentYear">Current Year</label><br />
+                            @Html.CheckBox("filterCurrentYear", ViewBag.FilterCurrentYear, htmlAttributes: new { @class = "form-check-input filterChecks" })
+                        </div>
+                    </div>
+                    <div class="col-1">
+                        <div class="form-group">
+                            <label for="filterCurrentMonth">Current Month</label><br />
+                            @Html.CheckBox("filterCurrentMonth", ViewBag.FilterCurrentMonth, htmlAttributes: new { @class = "form-check-input filterChecks" })
+                        </div>
+                    </div>
+                    <div class="col-1">
+                        <div class="form-group">
+                            <label for="filterCurrentWeek">Current Week</label><br />
+                            @Html.CheckBox("filterCurrentWeek", ViewBag.FilterCurrentWeek, htmlAttributes: new { @class = "form-check-input filterChecks" })
+                        </div>
+                    </div>
+                    <div class="col" style="align-self: end; text-align: end;">
+                        <button type="submit" style="border: 0; background: transparent">
+                            <img src="~/images/More.png" height="20" width="20" title="Filter" />
+                        </button>
+                        <a asp-action="Index"
+                           asp-route-sortOrder="@ViewBag.SortOrder"
+                           asp-route-clearFilters="true">
+                            <img src="~/images/Cancel.png" height="20" width="20" title="Clear" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        Spill Status
+                        @* <div class="sort-div">
+                            <a asp-action="Index"
+                                asp-route-sortOrder="SelectedSpillStatusAsc"
+                                asp-route-selectedSpillStatus="@ViewBag.SelectedSpillStatus"
+                                asp-route-raisedAfter="@ViewBag.RaisedAfter"
+                                asp-route-raisedBefore="@ViewBag.RaisedBefore"
+                                asp-route-selectedCompletedUser="@ViewBag.SelectedCompletedUser"
+                                asp-route-filtered="true">
+                                    <img src="~/images/sort-up.svg" />
+                            </a>
+                            <a asp-action="Index"
+                               asp-route-sortOrder="SelectedSpillStatusDesc"
+                               asp-route-selectedSpillStatus="@ViewBag.SelectedSpillStatus"
+                               asp-route-raisedAfter="@ViewBag.RaisedAfter"
+                               asp-route-raisedBefore="@ViewBag.RaisedBefore"
+                               asp-route-selectedCompletedUser="@ViewBag.SelectedCompletedUser"
+                               asp-route-filtered="true">
+                                <img src="~/images/sort-down.svg" />
+                            </a>
+                        </div> *@
+                    </th>
+                    @* <th>
+                        CFNOC Incident #
+                    </th>
+                    <th>
+                        DGDS SIM Incident #
+                    </th> *@
+                    @* <th>
+                        Burned and Annotated
+                    </th> *@
+                    @* <th style="min-width: 5rem;">
+                        ISSO Informed
+                    </th>
+                    <th style="min-width: 5rem;">
+                        Manager Informed
+                    </th> *@
+                    <th>
+                        Nature of Spill
+                    </th>
+                    @* <th>
+                        Transfer Request Completed
+                    </th>
+                    <th>
+                        Email Triple Deleted
+                    </th>
+                    <th>
+                        Client Informed
+                    </th>
+                    <th>
+                        Consideration Power Down
+                    </th>
+                    <th>
+                        CD Sent
+                    </th> *@
+                    <th>
+                        Date of Spill
+                    </th>
+                    <th>
+                        Time Of Spill
+                    </th>
+                    <th>
+                        Time Identified as Spill
+                    </th>
+                    @* <th>
+                        Time Reported to ISSO
+                    </th> *@
+                    @* <th>
+                        Workstation Affected
+                    </th>
+                    <th>
+                        Workstation Asset Number
+                    </th> *@
+                    <th>
+                        Completed User
+                    </th>
+                    <th>
+                        Reviewed User
+                    </th>
+                    @* <th>
+                        Originating System
+                    </th>
+                    <th>
+                        Destination System
+                    </th> *@
+                    <th style="max-width: 5rem;">
+                        Transfer Request
+                    </th>
+                    <th style="min-width: 11rem;"></th>
+                </tr>
+            </thead>
+        @foreach (var item in Model) {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SpillStatus!.SpillStatusDesc)
+                    </td>
+                    @* <td>
+                        @Html.DisplayFor(modelItem => item.CFNOCIncidentNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DGDSSIMIncidentNumber)
+                    </td> *@
+                    @* <td>
+                        @Html.DisplayFor(modelItem => item.BurnedAndAnnotated)
+                    </td> *@
+                    @* <td>
+                        @Html.DisplayFor(modelItem => item.IssoInformed)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ManagerInformed)
+                    </td> *@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NatureOfSpill)
+                    </td>
+                    @* <td>
+                        @Html.DisplayFor(modelItem => item.TransferRequestCompleted)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EmailTripleDeleted)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ClientInformed)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ConsiderationPowerDown)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CDSent)
+                    </td> *@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateOfSpill)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TimeOfSpill)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TimeIdentifiedSpill)
+                    </td>
+                    @* <td>
+                        @Html.DisplayFor(modelItem => item.TimeReported)
+                    </td> *@
+                    @* <td>
+                        @Html.DisplayFor(modelItem => item.WorkstationAffected)
+                    </td> 
+                    <td>
+                        @Html.DisplayFor(modelItem => item.WorkstationAssetNumber)
+                    </td> *@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SpecialistUser!.Username)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReviewerUser!.Username)
+                    </td>
+                    @* <td>
+                        @Html.DisplayFor(modelItem => item.OrigSystem!.SystemName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DestSystem!.SystemName)
+                    </td> *@
+                    <td>
+                        <a target="_blank" asp-controller="Transfers" asp-action="Details" asp-route-id="@item.TransferId">
+                            <img src="~/images/box-arrow-up-right.svg" alt="Link to Transfer Image" height="20" width="20" title="View Transfer" style="margin-left: 20px;" />
+                        </a>
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.SpillId"><img src="~/images/Edit.png" height="20" width="20" title="Edit" /></a>
+                        <a asp-action="Details" asp-route-id="@item.SpillId"><img src="~/images/Details.png" height="20" width="20" title="Details" /></a>
+                        <a asp-action="Delete" asp-route-id="@item.SpillId"><img src="~/images/Delete.png" height="20" width="20" title="Delete" /></a>
+                    </td>
+                </tr>
+        }
+            </tbody>
+        </table>
+        @Html.PagedListPager(Model, page => Url.Action("Index", new
+            {
+                page,
+                sortOrder = ViewBag.SortOrder,
+                selectedSpillStatus = ViewBag.SelectedSpillStatus,
+                raisedAfter = ViewBag.RaisedAfter,
+                raisedBefore = ViewBag.RaisedBefore,
+                selectedCompletedUser = ViewBag.SelectedCompletedUser,
+                selectedOrigSystem = ViewBag.SelectedOrigSystem,
+                selectedDestSystem = ViewBag.SelectedDestSystem,
+                filterCurrentYear = ViewBag.FilterCurrentYear,
+                filterCurrentMonth = ViewBag.FilterCurrentMonth,
+                filterCurrentWeek = ViewBag.FilterCurrentWeek
+            }),
+                 new X.PagedList.Web.Common.PagedListRenderOptions
+        {
+            PageClasses = new string[] { "page-link" },
+            UlElementClasses = new string[] { "pagination" },
+            LiElementClasses = new string[] { "page-item" },
+            DisplayEllipsesWhenNotShowingAllPageNumbers = true
+        })
+    </form>
 </div>
 <main>
     <div>

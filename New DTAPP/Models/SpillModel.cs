@@ -15,6 +15,13 @@ public class SpillModel
 
     public int SpillId { get; set; }
 
+    public int? SpillStatusId { get; set; }
+    public SpillStatusModel? SpillStatus { get; set; }
+
+    public string? CFNOCIncidentNumber { get; set; }
+
+    public string? DGDSSIMIncidentNumber { get; set; }
+
     public bool BurnedAndAnnotated { get; set; }
 
     [DisplayFormat(DataFormatString = "{0:yyy/MM/dd HH:mm}")]
@@ -60,7 +67,13 @@ public class SpillModel
 
     public UserModel? ReviewerUser { get; set; }
 
-    public string? SystemsInvolved { get; set; }
+    public int? OrigSystemId { get; set; }
+
+    public SystemModel? OrigSystem { get; set; } = null!;
+
+    public int? DestSystemId { get; set; }
+
+    public SystemModel? DestSystem { get; set; } = null!;
 
     public int TransferId { get; set; }
 

@@ -14,4 +14,8 @@ public partial class System
     public virtual ICollection<Transfer> TransferDestSystems { get; set; } = new List<Transfer>();
 
     public virtual ICollection<Transfer> TransferOrigSystems { get; set; } = new List<Transfer>();
+
+    public virtual ICollection<Spill> SpillOrigSystems { get; set; } = new List<Spill>();
+
+    public virtual ICollection<Spill> SpillDestSystems { get; set; } = new List<Spill>();
 }

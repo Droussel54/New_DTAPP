@@ -39,7 +39,10 @@ public class SpillRepository : ISpillRepository
         var spills = await _context.Spills
             .Include(t => t.SpecialistUser)
             .Include(t => t.ReviewerUser)
+            .Include(t => t.OrigSystem)
+            .Include(t => t.DestSystem)
             .Include(t => t.Transfer)
+            .Include(t => t.SpillStatus)
             .AsNoTracking().ToListAsync();
 
         spillModel = spills?.EntityToModelSpill()!;
@@ -54,6 +57,9 @@ public class SpillRepository : ISpillRepository
         var spill = await _context.Spills
             .Include(t => t.SpecialistUser)
             .Include(t => t.ReviewerUser)
+            .Include(t => t.OrigSystem)
+            .Include(t => t.DestSystem)
+            .Include(t => t.SpillStatus)
             .FirstOrDefaultAsync(t => t.SpillId == id);
 
         spillModel = spill?.EntityToModelSpill();

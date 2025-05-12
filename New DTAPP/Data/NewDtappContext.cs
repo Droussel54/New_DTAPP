@@ -35,6 +35,8 @@ public partial class NewDtappContext : DbContext
 
     public virtual DbSet<Spill> Spills { get; set; }
 
+    public virtual DbSet<SpillStatus> SpillStatuses { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<File>(entity =>
@@ -240,9 +242,11 @@ public partial class NewDtappContext : DbContext
 
         modelBuilder.Entity<Spill>(entity =>
         {
-            entity.ToTable("spill");
-            
-            entity.Property(e => e.SpillId).HasColumnName("spill_id");
+        entity.ToTable("spill");
+
+        entity.Property(e => e.SpillId).HasColumnName("spill_id");
+            entity.Property(e => e.CFNOCIncidentNumber).HasColumnName("cfnoc_incident_number");
+            entity.Property(e => e.DGDSSIMIncidentNumber).HasColumnName("dgds_sim_incident_number");
             entity.Property(e => e.BurnedAndAnnotated).HasColumnName("burned_and_annotated");
             entity.Property(e => e.IssoInformed)
                 .HasColumnType("datetime")
@@ -278,22 +282,46 @@ public partial class NewDtappContext : DbContext
                 .HasColumnName("workstation_asset_number");
             entity.Property(e => e.SpecialistId).HasColumnName("specialist_id");
             entity.Property(e => e.ReviewerId).HasColumnName("reviewer_id");
-            entity.Property(e => e.SystemsInvolved)
-                .IsUnicode(false)
-                .HasColumnName("systems_involved");
+            entity.Property(e => e.OrigSystemId).HasColumnName("orig_system_id");
+            entity.Property(e => e.DestSystemId).HasColumnName("dest_system_id");
             entity.Property(e => e.TransferId).HasColumnName("transfer_id");
+            entity.Property(e => e.SpillStatusId).HasColumnName("spill_status_id");
 
             entity.HasOne(d => d.SpecialistUser).WithMany(p => p.SpillCompletedUsers)
                 .HasForeignKey(d => d.SpecialistId)
-                .HasConstraintName("FK_spill2");
+                .HasConstraintName("FK_spill_user");
 
             entity.HasOne(d => d.ReviewerUser).WithMany(p => p.SpillReviewedUsers)
                 .HasForeignKey(d => d.ReviewerId)
-                .HasConstraintName("FK_spill3");
+                .HasConstraintName("FK_spill_user1");
+
+            entity.HasOne(d => d.OrigSystem).WithMany(p => p.SpillOrigSystems)
+                .HasForeignKey(d => d.OrigSystemId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_spill_system");
+
+            entity.HasOne(d => d.DestSystem).WithMany(p => p.SpillDestSystems)
+                .HasForeignKey(d => d.DestSystemId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_spill_system1");
 
             entity.HasOne(d => d.Transfer).WithMany(p => p.SpillTransfers);
             //    .HasForeignKey(d => d.TransferId)
             //    .HasConstraintName("FK_Spill1");
+
+            entity.HasOne(d => d.SpillStatus).WithMany(p => p.SpillStatuses)
+                .HasForeignKey(d => d.SpillStatusId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_spill_status");
+        });
+
+        modelBuilder.Entity<SpillStatus>(entity =>
+        {
+            entity.ToTable("spillStatus");
+
+            entity.Property(e => e.SpillStatusId).HasColumnName("status_id");
+            entity.Property(e => e.SpillStatusDesc).HasColumnName("status");
+            entity.Property(e => e.Archived).HasColumnName("archived");
         });
 
         OnModelCreatingPartial(modelBuilder);

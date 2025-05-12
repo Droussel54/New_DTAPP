@@ -13,9 +13,44 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="mb-3">
-                <label asp-for="TransferId" class="form-label">Transfer ID</label>
-                <input type="number" asp-for="TransferId" class="form-control" />
+                <label asp-for="TransferId" class="form-label">Transfer Request ID</label>
+
+                @if(Model.TransferId != 0)
+                {
+                    <div class="row">
+                        <div class="col-11">
+                            <input type="number" asp-for="TransferId" class="form-control" />
+                        </div>
+                        <div class="col-1">
+                            <a target="_blank" asp-controller="Transfers" asp-action="Details" asp-route-id="@Model.TransferId">
+                                <img src="~/images/box-arrow-up-right.svg" alt="Link to Transfer Image" height="20" width="20" title="View Transfer" />
+                            </a>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <input type="number" value="" asp-for="TransferId" class="form-control" />
+                }
+
                 <span asp-validation-for="TransferId" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="SpillStatusId" class="form-label">Spill Status</label>
+                <select asp-for="SpillStatusId" asp-items="ViewBag.SpillStatusId" class="form-control">
+                    <option value=""></option>
+                </select>
+                <span asp-validation-for="SpillStatusId" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="CFNOCIncidentNumber" class="form-label">CFNOC Incident #</label>
+                <input asp-for="CFNOCIncidentNumber" class="form-control" />
+                <span asp-validation-for="CFNOCIncidentNumber" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="DGDSSIMIncidentNumber" class="form-label">DGDS SIM Incident #</label>
+                <input asp-for="DGDSSIMIncidentNumber" class="form-control" />
+                <span asp-validation-for="DGDSSIMIncidentNumber" class="text-danger"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="IssoInformed" class="form-label">ISSO Informed</label>
@@ -124,12 +159,16 @@
                 </select>
                 <span asp-validation-for="ReviewerId" class="text-danger"></span>
             </div>
+
             <div class="mb-3">
-                <label asp-for="SystemsInvolved" class="form-label">Systems Involved</label>
-                <select asp-for="SystemsInvolved" asp-items="ViewBag.SystemsInvolved" class="form-control" multiple>
-                    <option value=""></option>
-                </select>
-                <span asp-validation-for="SystemsInvolved" class="text-danger"></span>
+                <label asp-for="OrigSystemId" class="form-label">Originating System</label>
+                <select asp-for="OrigSystemId" class="form-control" asp-items="ViewBag.OrigSystemId"></select>
+                <span asp-validation-for="OrigSystemId" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="DestSystemId" class="form-label">Destination System</label>
+                <select asp-for="DestSystemId" class="form-control" asp-items="ViewBag.DestSystemId"></select>
+                <span asp-validation-for="DestSystemId" class="text-danger"></span>
             </div>
 
             <div class="mb-3">

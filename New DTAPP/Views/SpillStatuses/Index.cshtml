@@ -1,0 +1,42 @@
+﻿@model IEnumerable<New_DTAPP.Models.SpillStatusModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create"><img src="~/images/Add.png" /></a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Status
+            </th>
+            <th>
+                Archived
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SpillStatusDesc)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Archived)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.SpillStatusId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.SpillStatusId">Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.SpillStatusId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
