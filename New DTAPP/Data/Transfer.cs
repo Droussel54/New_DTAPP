@@ -7,7 +7,7 @@ public partial class Transfer
 {
     public int TransferId { get; set; }
 
-    public DateTime RequestCreatedAt { get; set; }
+    public DateTime? RequestCreatedAt { get; set; }
 
     public DateTime? SentTime { get; set; }
 

@@ -19,22 +19,26 @@
             <input type="hidden" asp-for="TransferId" />
             <div class="mb-3">
                 <label asp-for="RequestCreatedAt" class="form-label">Time of Request (EST)</label>
-                <input id="RequestCreatedAt" name="RequestCreatedAt" value="@Model.RequestCreatedAt.ToString("yyyy-MM-ddTHH:mm:ss")" type="datetime-local" class="form-control" />
+                @if (Model?.RequestCreatedAt != null)
+                {
+                    <input id="RequestCreatedAt" name="RequestCreatedAt" value="@Model.RequestCreatedAt?.ToString("yyyy-MM-ddTHH:mm:ss")" type="datetime-local" class="form-control" />
+                }
+                else
+                {
+                    <input id="RequestCreatedAt" name="RequestCreatedAt" value="" type="datetime-local" class="form-control" />
+                }
                 <span asp-validation-for="RequestCreatedAt" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="SentTime" class="form-label">Sent Time (EST)</label>
-
-                @if (Model.SentTime != null)
+                <label asp-for="SentTime" class="form-label">Time Sent (EST)</label>
+                @if (Model?.SentTime != null)
                 {
-                    <input id="SentTime" name="SentTime" value="@Model.SentTime.Value.ToString("yyyy-MM-ddTHH:mm:ss")" type="datetime-local" class="form-control" />
+                    <input id="SentTime" name="SentTime" value="@Model.SentTime?.ToString("yyyy-MM-ddTHH:mm:ss")" type="datetime-local" class="form-control" />
                 }
-                else{
-
+                else
+                {
                     <input id="SentTime" name="SentTime" value="" type="datetime-local" class="form-control" />
-
                 }
-
                 <span asp-validation-for="SentTime" class="text-danger"></span>
             </div>
             <div class="mb-3">
@@ -150,14 +154,14 @@
                     <option value=""></option>
                 </select>
             </div>
-            <div class="mb-3">
+            <div hidden class="mb-3" style="display: none">
                 <label asp-for="CompletedAt" class="form-label">Created At</label>
-                <input id="CompletedAt" name="CompletedAt" value="@Model.CompletedAt?.ToString("yyyy-MM-ddThh:mm:ss")" type="datetime" class="form-control" />
+                <input id="CompletedAt" name="CompletedAt" value="@Model.CompletedAt?.ToString("yyyy-MM-ddThh:mm:ss")" type="datetime-local" class="form-control" />
                 <span asp-validation-for="CompletedAt" class="text-danger"></span>
             </div>
             <div hidden class="mb-3" style="display: none">
                 <label asp-for="ReviewedAt" class="form-label">Reviewed At</label>
-                <input id="ReviewedAt" name="ReviewedAt" value="@Model.ReviewedAt?.ToString("yyyy-MM-ddThh:mm:ss")" type="datetime" class="form-control" />
+                <input id="ReviewedAt" name="ReviewedAt" value="@Model.ReviewedAt?.ToString("yyyy-MM-ddThh:mm:ss")" type="datetime-local" class="form-control" />
                 <span asp-validation-for="ReviewedAt" class="text-danger"></span>
             </div>
             <div class="mb-3">

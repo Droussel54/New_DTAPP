@@ -81,14 +81,14 @@ namespace New_DTAPP.Controllers
             {
                 if (filterCurrentYear.Value)
                 {
-                    q = q.Where(u => u.RequestCreatedAt.Year == DateTime.Now.Year);
+                    q = q.Where(u => u.RequestCreatedAt.Value.Year == DateTime.Now.Year);
                 }
             }
             if (filterCurrentMonth.HasValue)
             {
                 if (filterCurrentMonth.Value)
                 {
-                    q = q.Where(u => u.RequestCreatedAt.Month == DateTime.Now.Month);
+                    q = q.Where(u => u.RequestCreatedAt.Value.Month == DateTime.Now.Month);
                 }
             }
             if (filterCurrentWeek.HasValue)
@@ -97,7 +97,7 @@ namespace New_DTAPP.Controllers
                 {
                     var dateRangeTo = DateTime.Today.AddDays(1);
                     var dateRangeFrom = DateTime.Today.AddDays(-7);
-                    q = q.Where(u => u.RequestCreatedAt.Date >= dateRangeFrom && u.RequestCreatedAt.Date < dateRangeTo);
+                    q = q.Where(u => u.RequestCreatedAt.Value.Date >= dateRangeFrom && u.RequestCreatedAt.Value.Date < dateRangeTo);
                 }
             }
 

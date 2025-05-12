@@ -67,7 +67,7 @@ namespace New_DTAPP.Controllers
         // GET: Transfers
         public async Task<IActionResult> Index(int? page, string? sortOrder, string? selectedUnit, string? raisedAfter, string? raisedBefore, 
                                                 string? selectedCompletedUser, bool? filterSpillOccurred, bool? filterTransferDenied, string? filtered, string? clearFilters, 
-                                                string? filterClientName, string? selectedOrigSystem, string? selectedDestSystem, 
+                                                string? filterClientName, string? selectedOrigSystem, string? selectedDestSystem,
                                                 bool? filterCurrentYear, bool? filterCurrentMonth, bool? filterCurrentWeek)
         {
             string cookieName = "DTAPPFilter"+ GetCurrentUser().Result.Username;
@@ -80,16 +80,16 @@ namespace New_DTAPP.Controllers
             cookieOptions.Path = "/";
             var cookie = Request.Cookies[cookieName];
             if (!string.IsNullOrEmpty(filtered)){
-                Response.Cookies.Append(cookieName  , "{SortOrder:'"+sortOrder+"', SelectedUnit:'"+selectedUnit+ "', RaisedAfter:'"+raisedAfter+ "', RaisedBefore:'"+raisedBefore+
+                Response.Cookies.Append(cookieName  , "{SortOrder:'"+sortOrder+"', SelectedUnit:'"+selectedUnit+"', RaisedAfter:'"+raisedAfter+"', RaisedBefore:'"+raisedBefore+
                                                         "', SelectedCompletedUser:'"+selectedCompletedUser+ 
                                                         "', filterClientName:'"+filterClientName+
                                                         "', FilterSpillOccurred:'"+filterSpillOccurred+
                                                         "', FilterTransferDenied:'"+filterTransferDenied+
                                                         "', SelectedOrigSystem:'"+selectedOrigSystem+
                                                         "', SelectedDestSystem:'"+selectedDestSystem+
-                                                        "', FilterCurrentYear:'" + filterCurrentYear +
-                                                        "', FilterCurrentMonth:'" + filterCurrentMonth +
-                                                        "', FilterCurrentWeek:'" + filterCurrentWeek +
+                                                        "', FilterCurrentYear:'"+filterCurrentYear+
+                                                        "', FilterCurrentMonth:'"+filterCurrentMonth+
+                                                        "', FilterCurrentWeek:'"+filterCurrentWeek+
                                                         "'}", cookieOptions);
             }
             if (cookie != null && string.IsNullOrEmpty(filtered) && string.IsNullOrEmpty(clearFilters))
@@ -100,14 +100,25 @@ namespace New_DTAPP.Controllers
                 raisedAfter = (string?)json["RaisedAfter"];
                 raisedBefore = (string?)json["RaisedBefore"];
                 selectedCompletedUser = (string?)json["SelectedCompletedUser"];
-                filterSpillOccurred = (bool?)json["FilterSpillOccurred"];
-                filterTransferDenied = (bool?)json["FilterTransferDenied"];
+
+                var filterSpillOccurredStr = (string?)json["FilterSpillOccurred"];
+                filterSpillOccurred = !string.IsNullOrEmpty(filterSpillOccurredStr) ? bool.Parse(filterSpillOccurredStr) : null;
+
+                var filterTransferDeniedStr = (string?)json["FilterTransferDenied"];
+                filterTransferDenied = !string.IsNullOrEmpty(filterTransferDeniedStr) ? bool.Parse(filterTransferDeniedStr) : null;
+
                 filterClientName = (string?)json["filterClientName"];
                 selectedOrigSystem = (string?)json["SelectedOrigSystem"];
                 selectedDestSystem = (string?)json["SelectedDestSystem"];
-                filterCurrentYear = (bool?)json["FilterCurrentYear"];
-                filterCurrentMonth = (bool?)json["FilterCurrentMonth"];
-                filterCurrentWeek = (bool?)json["FilterCurrentWeek"];
+
+                var filterCurrentYearStr = (string?)json["FilterCurrentYear"];
+                filterCurrentYear = !string.IsNullOrEmpty(filterCurrentYearStr) ? bool.Parse(filterCurrentYearStr) : null;
+
+                var filterCurrentMonthStr = (string?)json["FilterCurrentMonth"];
+                filterCurrentMonth = !string.IsNullOrEmpty(filterCurrentMonthStr) ? bool.Parse(filterCurrentMonthStr) : null;
+
+                var filterCurrentWeekStr = (string?)json["FilterCurrentWeek"];
+                filterCurrentWeek = !string.IsNullOrEmpty(filterCurrentWeekStr) ? bool.Parse(filterCurrentWeekStr) : null;
             }
             ViewBag.UsernameSortParm = String.IsNullOrEmpty(sortOrder) ? "RequestCreatedAt" : "";
             ViewData["ClientUnitId"] = new SelectList(await _unitRepository.GetAllUnitsAsync(true, false), "UnitId", "UnitName");
@@ -179,14 +190,14 @@ namespace New_DTAPP.Controllers
             {
                 if (filterCurrentYear.Value)
                 {
-                    q = q.Where(u => u.RequestCreatedAt.Year == DateTime.Now.Year);
+                    q = q.Where(u => u.RequestCreatedAt.Value.Year == DateTime.Now.Year);
                 }
             }
             if (filterCurrentMonth.HasValue)
             {
                 if (filterCurrentMonth.Value)
                 {
-                    q = q.Where(u => u.RequestCreatedAt.Month == DateTime.Now.Month);
+                    q = q.Where(u => u.RequestCreatedAt.Value.Month == DateTime.Now.Month);
                 }
             }
             if (filterCurrentWeek.HasValue)
@@ -195,7 +206,7 @@ namespace New_DTAPP.Controllers
                 {
                     var dateRangeTo = DateTime.Today.AddDays(1);
                     var dateRangeFrom = DateTime.Today.AddDays(-7);
-                    q = q.Where(u => u.RequestCreatedAt.Date >= dateRangeFrom && u.RequestCreatedAt.Date < dateRangeTo);
+                    q = q.Where(u => u.RequestCreatedAt.Value.Date >= dateRangeFrom && u.RequestCreatedAt.Value.Date < dateRangeTo);
                 }
             }
             switch (sortOrder)
@@ -349,7 +360,7 @@ namespace New_DTAPP.Controllers
 
             ViewData["CurrentUser"] = user;
 
-            model.CompletedUserId = user?.UserId;
+            model.CompletedUserId = user.UserId;
 
             ViewData["ClientUnitId"] = new SelectList(await _unitRepository.GetAllUnitsAsync(true,true), "UnitId", "UnitName");
             ViewData["OperationId"] = new SelectList(await _operationRepository.GetAllOperationsAsync(true, true), "OperationId", "OperationName");
@@ -396,13 +407,13 @@ namespace New_DTAPP.Controllers
                 }
             }
             TimeZoneInfo est = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
-            if (transfer.SentTime.HasValue)
+            if (transfer.SentTime != null)
             {
                 transfer.SentTime = TimeZoneInfo.ConvertTimeToUtc(transfer.SentTime.Value, est);
             }
             if (transfer.RequestCreatedAt != null)
             {
-                transfer.RequestCreatedAt = TimeZoneInfo.ConvertTimeToUtc(transfer.RequestCreatedAt, est);
+                transfer.RequestCreatedAt = TimeZoneInfo.ConvertTimeToUtc(transfer.RequestCreatedAt.Value, est);
             }
 
             ModelState.Remove("DestSystem");
@@ -471,13 +482,13 @@ namespace New_DTAPP.Controllers
         {
             var transfer = await _transferRepository.GetTransferByIdAsync(id);
             TimeZoneInfo est = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
-            if (transfer.SentTime.HasValue)
+            if (transfer.SentTime != null)
             {
                 transfer.SentTime = TimeZoneInfo.ConvertTimeFromUtc(transfer.SentTime.Value, est);
             }
             if (transfer.RequestCreatedAt != null)
             {
-                transfer.RequestCreatedAt = TimeZoneInfo.ConvertTimeFromUtc(transfer.RequestCreatedAt, est);
+                transfer.RequestCreatedAt = TimeZoneInfo.ConvertTimeFromUtc(transfer.RequestCreatedAt.Value, est);
             }
             if (transfer == null)
             {
@@ -537,13 +548,13 @@ namespace New_DTAPP.Controllers
 
 
             TimeZoneInfo est = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
-            if (transfer.SentTime.HasValue)
+            if (transfer.SentTime != null)
             {
                 transfer.SentTime = TimeZoneInfo.ConvertTimeToUtc(transfer.SentTime.Value, est);
             }
             if (transfer.RequestCreatedAt != null)
             {
-                transfer.RequestCreatedAt = TimeZoneInfo.ConvertTimeToUtc(transfer.RequestCreatedAt, est);
+                transfer.RequestCreatedAt = TimeZoneInfo.ConvertTimeToUtc(transfer.RequestCreatedAt.Value, est);
             }
 
 

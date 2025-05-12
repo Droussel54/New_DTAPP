@@ -6,6 +6,7 @@ using System;
 //using System.ComponentModel.DataAnnotations;
 using static New_DTAPP.Utility.ValidateRequiredDropDownsAndTextFieldsAttribute;
 using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json.Serialization;
 
 namespace New_DTAPP.Models;
 
@@ -22,12 +23,13 @@ public class TransferModel //: IValidatableObject
         "RequestCreatedAt", "SentTime",
         "ReviewedAt", "CompletedAt")]
     [DisplayFormat(DataFormatString = "{0:yyy/MM/dd HH:mm}")]
-    public DateTime RequestCreatedAt { get; set; } = DateTime.Now;
+    [Required(ErrorMessage = "Time of Request is required.")]
+    public DateTime? RequestCreatedAt { get; set; } = DateTime.Now;
 
     //[ValidateTransfersDates(
     //    DateValidationType.SentTime,
     //    "RequestCreatedAt", "SentTime",
-    //    "ReviewedAt", "CompletedAt")] 
+    //    "ReviewedAt", "CompletedAt")]
     [DisplayFormat(DataFormatString = "{0:yyy/MM/dd HH:mm}")]
     public DateTime? SentTime { get; set; }
 
@@ -79,9 +81,10 @@ public class TransferModel //: IValidatableObject
 
     //[ValidateRequiredDropDownsAndTextFields(FieldValidationType.RequiredField, ErrorMessage = "Completed User is required.")] 
     //[ValidateRequiredDropDownsAndTextFields(FieldValidationType.ReviewedAndCompletedUsersCannotBeTheSame, "ReviewedUserId")]
+    [Required(ErrorMessage = "Completed User is required.")]
     public int? CompletedUserId { get; set; }
 
-   
+    //[ValidateRequiredDropDownsAndTextFields(FieldValidationType.RequiredFieldString, ErrorMessage = "Completed User is required.")]
     public UserModel? CompletedUser { get; set; }
 
     //[System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Destination System is required.")]

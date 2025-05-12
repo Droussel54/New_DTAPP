@@ -99,7 +99,7 @@ namespace New_DTAPP.Controllers
 
             var q = GetFilteredList(selectedUnit, raisedAfter, raisedBefore, selectedCompletedUser, filterSpillOccurred, filterTransferDenied).Result;
 
-            var group = q.Select(x => new { time = x.RequestCreatedAt.Hour})
+            var group = q.Select(x => new { time = x.RequestCreatedAt.Value.Hour})
                          .GroupBy(x => new { x.time})
                          .Select(g => new { hour = g.Key.time, count = g.Count() })
                          .OrderBy(o => o.hour);

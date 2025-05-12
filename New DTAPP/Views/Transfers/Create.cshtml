@@ -23,7 +23,7 @@
                     <div class="mb-3">
                         <label asp-for="RequestCreatedAt" class="form-label">Time of Request (EST)</label>
                         @if (Model?.RequestCreatedAt != null) {
-                            <input id="RequestCreatedAt" name="RequestCreatedAt" value="@Model.RequestCreatedAt.ToString("yyyy-MM-ddTHH:mm:ss")" type="datetime" class="form-control" />
+                            <input id="RequestCreatedAt" name="RequestCreatedAt" value="@Model.RequestCreatedAt?.ToString("yyyy-MM-ddTHH:mm:ss")" type="datetime-local" class="form-control" />
                         }
                         else
                         {
@@ -31,12 +31,11 @@
                         }
                         <span asp-validation-for="RequestCreatedAt" class="text-danger"></span>
                     </div>
-                    
                     <div class="mb-3">
                         <label asp-for="SentTime" class="form-label">Time Sent (EST)</label>
                         @if (Model?.SentTime != null)
                         {
-                            <input id="SentTime" name="SentTime" value="@Model.SentTime.Value.ToString("yyyy-MM-ddTHH:mm:ss")" type="datetime" class="form-control" />
+                            <input id="SentTime" name="SentTime" value="@Model.SentTime?.ToString("yyyy-MM-ddTHH:mm:ss")" type="datetime-local" class="form-control" />
                         }
                         else
                         {
