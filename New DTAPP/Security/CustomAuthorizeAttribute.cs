@@ -15,7 +15,7 @@ namespace New_DTAPP.Security
             ClaimsPrincipal user = filterContext.HttpContext.User;
             if (!IsUserLoggedIn(user))
             {
-                //filterContext.Result = new RedirectResult(AccessDeniedPagePath);
+                filterContext.Result = new RedirectResult(AccessDeniedPagePath);
             }
 
 
@@ -27,8 +27,8 @@ namespace New_DTAPP.Security
 
             if (!userIsInRoles)
             {
-                //filterContext.HttpContext.Response.StatusCode = 403;
-                //filterContext.Result = new RedirectResult(AccessDeniedPagePath);
+                filterContext.HttpContext.Response.StatusCode = 403;
+                filterContext.Result = new RedirectResult(AccessDeniedPagePath);
             }
         }
 

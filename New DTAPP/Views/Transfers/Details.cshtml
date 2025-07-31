@@ -177,9 +177,10 @@
     {
         <a target="_blank" class="btn btn-primary" asp-controller="Spills" asp-action="Create" asp-route-transferId="@Model.TransferId">Create Spill</a> <span>|</span>
     }
-    @* @if (User.IsInRole(Admin) || User.IsInRole(Supervisor)) { *@
+     @if (User.IsInRole(Admin) || User.IsInRole(Supervisor)) 
+     { 
         <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.TransferId">Edit</a> <span>|</span>
-    @* } *@
+     } 
     <a class="btn btn-primary" asp-action="Index">Back</a>
 </div>
 

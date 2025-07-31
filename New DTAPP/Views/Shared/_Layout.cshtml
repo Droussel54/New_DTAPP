@@ -24,8 +24,8 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Transfers" asp-action="Index">Data Transfer Requests</a>
                         </li>
-                        @* @if (User.IsInRole(Admin) || User.IsInRole(Supervisor))
-                        {  *@
+                        @if (User.IsInRole(Admin) || User.IsInRole(Supervisor))
+                        {
                             <div class="dropdown mx-3">
                                 <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Admin</button>
 
@@ -53,8 +53,8 @@
                                     <li class="nav-item">
                                         <a class="dropdown-item" asp-area="" asp-controller="SpillStatuses" asp-action="Index">Spill Statuses</a>
                                     </li>
-                                    @* @if (User.IsInRole(Admin))
-                                    { *@
+                                    @if (User.IsInRole(Admin))
+                                    {
                                         <li><hr class="dropdown-divider"></li>
                                         <li class="nav-item">
                                             <a class="dropdown-item" asp-area="" asp-controller="TransferType" asp-action="Index">TransferType</a>
@@ -67,10 +67,10 @@
                                         <li class="nav-item">
                                             <a class="dropdown-item" asp-area="" asp-controller="Users" asp-action="Index">Users</a>
                                         </li>
-                                    @* } *@
+                                    } 
                                 </ul>
                             </div>
-                        @* } *@
+                        }
                     </ul>
                     <button id="dark-mode-btn" type="button" style="border: 0; background: transparent; user-select: none;" onclick="SetMode('dark')">
                         <img class="dark-mode" src="~/images/dark-mode.svg" alt="Dark Mode Image" height="30" width="30" title="Dark Mode" />

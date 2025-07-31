@@ -25,7 +25,7 @@ namespace New_DTAPP.Repository
             _context = context;
             _configuration = configuration;
             isDevelopment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == EnvironmentName.Development;
-            //AD = new(ContextType.Domain, isDevelopment ? DevLdapUrl : ProdLdapUrl);
+            AD = new(ContextType.Domain, isDevelopment ? DevLdapUrl : ProdLdapUrl);
         }
 
         public async Task<UserModel?> AddUserAsync(UserModel userModel)

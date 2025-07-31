@@ -179,9 +179,9 @@ public partial class NewDtappContext : DbContext
                 .HasForeignKey(d => d.ReviewedUserId)
                 .HasConstraintName("FK_transfer_user1");
 
-            entity.HasOne(d => d.Spill).WithMany(p => p.TransferSpills);
-            //    .HasForeignKey(d => d.SpillId)
-            //    .HasConstraintName("FK_spill");
+            entity.HasOne(d => d.Spill).WithMany(p => p.TransferSpills)
+                .HasForeignKey(d => d.SpillId)
+                .HasConstraintName("FK_spill");
 
         });
 
