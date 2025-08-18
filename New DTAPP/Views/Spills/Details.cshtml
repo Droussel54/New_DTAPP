@@ -5,172 +5,164 @@
 }
 
 <h1>Details</h1>
-
 <h4>Spill</h4>
 <hr />
-<div class="row">
-    <div class="col">
-        <dl class="row">
-            <dt class="col-sm-4">
-                Transfer Request ID
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.TransferId)
-                <a target="_blank" asp-controller="Transfers" asp-action="Details" asp-route-id="@Model.TransferId">
-                    <img src="~/images/box-arrow-up-right.svg" alt="Link to Transfer Image" height="20" width="20" title="View Transfer" />
-                </a>
-            </dd>
-            <dt class="col-sm-4">
-                Spill Status
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.SpillStatus.SpillStatusDesc)
-            </dd>
-            <dt class="col-sm-4">
-                CFNOC Incident #
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.CFNOCIncidentNumber)
-            </dd>
-            <dt class="col-sm-4">
-                DGDS SIM Incident #
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.DGDSSIMIncidentNumber)
-            </dd>
-            <dt class="col-sm-4">
-                ISSO Informed
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.IssoInformed)
-            </dd>
-            <dt class="col-sm-4">
-                Manager Informed
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.ManagerInformed)
-            </dd>
-            <dt class="col-sm-4">
-                Nature of Spill
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.NatureOfSpill)
-            </dd>
-            <div class="row">
-                <div class="col-sm-4">
-                    <dd style="float:left">
-                        @Html.DisplayFor(model => model.BurnedAndAnnotated)
-                    </dd>
-                    <dt style="padding: 0 0 0 1em;">
-                        Burned and Annotated
-                    </dt>
-                </div>
-                <div class="col-sm-4">
-                    <dd style="float:left">
-                        @Html.DisplayFor(model => model.TransferRequestCompleted)
-                    </dd>
-                    <dt style="padding: 0 0 0 1em;">
-                        Transfer Request Completed
-                    </dt>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-4">
-                    <dd style="float:left">
-                        @Html.DisplayFor(model => model.EmailTripleDeleted)
-                    </dd>
-                    <dt style="padding: 0 0 0 1em;">
-                        Email Triple Deleted
-                    </dt>
-                </div>
-                <div class="col-sm-4">
-                    <dd style="float:left">
-                        @Html.DisplayFor(model => model.ClientInformed)
-                    </dd>
-                    <dt style="padding: 0 0 0 1em;">
-                        Client Informed
-                    </dt>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-4">
-                    <dd style="float:left">
-                        @Html.DisplayFor(model => model.ConsiderationPowerDown)
-                    </dd>
-                    <dt style="padding: 0 0 0 1em;">
-                        Consideration Power Down
-                    </dt>
-                </div>
-                <div class="col-sm-4">
-                    <dd style="float:left">
-                        @Html.DisplayFor(model => model.CDSent)
-                    </dd>
-                    <dt style="padding: 0 0 0 1em;">
-                        CD Sent
-                    </dt>
-                </div>
-            </div>
-            <dt class="col-sm-4">
-                Date of Spill
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.DateOfSpill)
-            </dd>
-            <dt class="col-sm-4">
-                Time of Spill
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.TimeOfSpill)
-            </dd>
-            <dt class="col-sm-4">
-                Time Identified as Spill
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.TimeIdentifiedSpill)
-            </dd>
-            <dt class="col-sm-4">
-                Time Reported to ISSO
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.TimeReported)
-            </dd>
-            <dt class="col-sm-4">
-                Workstation Affected
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.WorkstationAffected)
-            </dd>
-            <dt class="col-sm-4">
-                Workstation Asset Number
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.WorkstationAssetNumber)
-            </dd>
-            <dt class="col-sm-4">
-                Specialist User Name
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.SpecialistUser!.Username)
-            </dd>
-            <dt class="col-sm-4">
-                Reviewer User Name
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.ReviewerUser!.Username)
-            </dd>
-            <dt class="col-sm-4">
-                Originating System
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.OrigSystem!.SystemName)
-            </dd>
-            <dt class="col-sm-4">
-                Destination System
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.DestSystem!.SystemName)
-            </dd>
-        </dl>
+<div class="row justify-content-between">
+    <div class="col-5">
+        <div class="mb-3">
+            <label asp-for="TransferId" class="fw-bold form-label">Transfer Request</label>
+            <a class="form-control btn btn-primary" target="_blank" asp-controller="Transfers" asp-action="Details" asp-route-id="@Model.TransferId" title="Open the Transfer in a new tab">
+                View Transfer <img id="testing" style="vertical-align:text-top!important;margin-left:5px!important;" src="~/images/box-arrow-up-right.svg" alt="Link to Transfer Image" height="20" width="20" />
+            </a>
+        </div>
+    </div>
+    <div class="col-5">
+    </div>
+</div>
+<div class="row justify-content-between">
+    <div class="col-5">
+        <div class="mb-3">
+            <label asp-for="NatureOfSpill" class="fw-bold form-label">Nature of Spill</label>
+            <input asp-for="NatureOfSpill" class="form-control" readonly />
+        </div>
+    </div>
+    <div class="col-5">
+        <div class="mb-3">
+            <label asp-for="SpillStatus.SpillStatusDesc" class="fw-bold form-label">Spill Status</label>
+            <input asp-for="SpillStatus.SpillStatusDesc" class="form-control" readonly />
+        </div>
+    </div>
+</div>
+<div class="row justify-content-between">
+    <div class="col-5">
+        <div class="mb-3">
+            <label asp-for="CFNOCIncidentNumber" class="fw-bold form-label">CFNOC Incident #</label>
+            <input asp-for="CFNOCIncidentNumber" class="form-control" readonly />
+        </div>
+    </div>
+    <div class="col-5">
+        <div class="mb-3">
+            <label asp-for="DGDSSIMIncidentNumber" class="fw-bold form-label">DGDS SIM Incident #</label>
+            <input asp-for="DGDSSIMIncidentNumber" class="form-control" readonly />
+        </div>
+    </div>
+</div>
+<div class="row justify-content-between">
+    <div class="col-5">
+        <div class="mb-3">
+            <label asp-for="IssoInformed" class="fw-bold form-label">ISSO Informed</label>
+            <input type="datetime" asp-format="{0:yyy/MM/dd HH:mm}" asp-for="IssoInformed" class="form-control" readonly />
+        </div>
+    </div>
+    <div class="col-5">
+        <div class="mb-3">
+            <label asp-for="ManagerInformed" class="fw-bold form-label">Manager Informed</label>
+            <input type="datetime" asp-format="{0:yyy/MM/dd HH:mm}" asp-for="ManagerInformed" class="form-control" readonly />
+        </div>
+    </div>
+</div>
+<div class="row justify-content-between">
+    <div class="col-5">
+        <div class="mb-3">
+            <label asp-for="DateOfSpill" class="fw-bold form-label">Date of Spill</label>
+            <input type="datetime" asp-format="{0:yyy/MM/dd HH:mm}" asp-for="DateOfSpill" class="form-control" readonly />
+        </div>
+    </div>
+    <div class="col-5">
+        <div class="mb-3">
+            <label asp-for="TimeIdentifiedSpill" class="fw-bold form-label">Time Identified as Spill</label>
+            <input type="datetime" asp-format="{0:yyy/MM/dd HH:mm}" asp-for="TimeIdentifiedSpill" class="form-control" readonly />
+        </div>
+    </div>
+</div>
+<div class="row justify-content-between">
+    <div class="col-5">
+        <div class="mb-3">
+            <label asp-for="WorkstationAffected" class="fw-bold form-label">Workstation Affected</label>
+            <input asp-for="WorkstationAffected" class="form-control" readonly />
+        </div>
+    </div>
+    <div class="col-5">
+        <div class="mb-3">
+            <label asp-for="WorkstationAssetNumber" class="fw-bold form-label">Workstation Asset Number</label>
+            <input asp-for="WorkstationAssetNumber" class="form-control" readonly />
+        </div>
+    </div>
+</div>
+<div class="row justify-content-between">
+    <div class="col-5">
+        <div class="mb-3">
+            <label asp-for="SpecialistUser.Username" class="fw-bold form-label">Specialist User Name</label>
+            <input asp-for="SpecialistUser.Username" class="form-control" readonly />
+        </div>
+    </div>
+    <div class="col-5">
+        <div class="mb-3">
+            <label asp-for="ReviewerUser.Username" class="fw-bold form-label">Reviewer User Name</label>
+            <input asp-for="ReviewerUser.Username" class="form-control" readonly />
+        </div>
+    </div>
+</div>
+<div class="row justify-content-between">
+    <div class="col-5">
+        <div class="mb-3">
+            <label asp-for="OrigSystem.SystemName" class="fw-bold form-label">Originating System</label>
+            <input asp-for="OrigSystem.SystemName" class="form-control" readonly />
+        </div>
+    </div>
+    <div class="col-5">
+        <div class="mb-3">
+            <label asp-for="DestSystem.SystemName" class="fw-bold form-label">Destination System</label>
+            <input asp-for="DestSystem.SystemName" class="form-control" readonly />
+        </div>
+    </div>
+</div>
+<div class="row justify-content-start">
+    <div class="col-3">
+        <div class="mb-3 form-check text-start">
+            <label class="fw-bold form-check-label">
+                <input asp-for="BurnedAndAnnotated" class="form-check-input" disabled /> <span>Burned and Annotated</span>
+            </label>
+        </div>
+    </div>
+    <div class="col-9">
+        <div class="mb-3 form-check text-start">
+            <label class="fw-bold form-check-label">
+                <input asp-for="TransferRequestCompleted" class="form-check-input" disabled /> <span>Transfer Request Completed</span>
+            </label>
+        </div>
+    </div>
+</div>
+<div class="row justify-content-start">
+    <div class="col-3">
+        <div class="mb-3 form-check text-start">
+            <label class="fw-bold form-check-label">
+                <input asp-for="ClientInformed" class="form-check-input" disabled /> <span>Client Informed</span>
+            </label>
+        </div>
+    </div>
+    <div class="col-9">
+        <div class="mb-3 form-check text-start">
+            <label class="fw-bold form-check-label">
+                <input asp-for="ConsiderationPowerDown" class="form-check-input" disabled /> <span>Consideration Power Down</span>
+            </label>
+        </div>
+    </div>
+</div>
+<div class="row justify-content-start">
+    <div class="col-3">
+        <div class="mb-3 form-check text-start">
+            <label class="fw-bold form-check-label">
+                <input asp-for="EmailTripleDeleted" class="form-check-input" disabled /> <span>Email Triple Deleted</span>
+            </label>
+        </div>
+    </div>
+    <div class="col-9">
+        <div class="mb-3 form-check text-start">
+            <label class="fw-bold form-check-label">
+                <input asp-for="CDSent" class="form-check-input" disabled /> <span>CD Sent</span>
+            </label>
+        </div>
     </div>
 </div>
 

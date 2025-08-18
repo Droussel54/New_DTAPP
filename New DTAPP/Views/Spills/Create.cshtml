@@ -8,176 +8,213 @@
 
 <h4>Spill</h4>
 <hr />
-<div class="row">
-    <div class="col-md-5">
-        <form asp-action="Create">
+<form asp-action="Create">
+    <div class="row justify-content-between">
+       <div class="col-5">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="mb-3">
-                <label asp-for="TransferId" class="form-label">Transfer Request ID</label>
+                <label class="form-label">Transfer Request <span class="text-danger fw-bold">*</span></label>
 
-                @if(Model.TransferId != 0)
+                @if (Model.TransferId != 0)
                 {
-                    <div class="row">
-                        <div class="col-11">
-                            <input type="number" asp-for="TransferId" class="form-control" readonly />
-                        </div>
-                        <div class="col-1">
-                            <a target="_blank" asp-controller="Transfers" asp-action="Details" asp-route-id="@Model.TransferId">
-                                <img src="~/images/box-arrow-up-right.svg" alt="Link to Transfer Image" height="20" width="20" title="View Transfer" />
-                            </a>
-                        </div>
-                    </div>
+                    <input type="hidden" asp-for="TransferId" class="form-control" readonly /><br />
+                    <a class="form-control btn btn-primary" target="_blank" asp-controller="Transfers" asp-action="Details" asp-route-id="@Model.TransferId" title="Open the Transfer in a new tab">
+                        View Transfer <img id="testing" style="vertical-align:text-top!important;margin-left:5px!important;" src="~/images/box-arrow-up-right.svg" alt="Link to Transfer Image" height="20" width="20" />
+                    </a>
                 }
                 else
                 {
-                    <input type="number" value="" asp-for="TransferId" class="form-control" />
+                    <input type="number" min="1" value="" asp-for="TransferId" class="form-control" required />
                 }
 
                 <span asp-validation-for="TransferId" class="text-danger"></span>
             </div>
+       </div>
+       <div class="col-5">
+       </div>
+    </div>
+    <div class="row justify-content-between">
+        <div class="col-5">
             <div class="mb-3">
-                <label asp-for="SpillStatusId" class="form-label">Spill Status</label>
-                <select asp-for="SpillStatusId" asp-items="ViewBag.SpillStatusId" class="form-control">
+                <label asp-for="NatureOfSpill" class="form-label">Nature of Spill <span class="text-danger fw-bold">*</span></label>
+                <input asp-for="NatureOfSpill" class="form-control" required />
+                <span asp-validation-for="NatureOfSpill" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-5">
+            <div class="mb-3">
+                <label asp-for="SpillStatusId" class="form-label">Spill Status <span class="text-danger fw-bold">*</span></label>
+                <select asp-for="SpillStatusId" asp-items="ViewBag.SpillStatusId" class="form-control" required>
                     <option value=""></option>
                 </select>
                 <span asp-validation-for="SpillStatusId" class="text-danger"></span>
             </div>
+        </div>
+    </div>
+    <div class="row justify-content-between">
+        <div class="col-5">
             <div class="mb-3">
                 <label asp-for="CFNOCIncidentNumber" class="form-label">CFNOC Incident #</label>
                 <input asp-for="CFNOCIncidentNumber" class="form-control" />
                 <span asp-validation-for="CFNOCIncidentNumber" class="text-danger"></span>
             </div>
+        </div>
+        <div class="col-5">
             <div class="mb-3">
                 <label asp-for="DGDSSIMIncidentNumber" class="form-label">DGDS SIM Incident #</label>
                 <input asp-for="DGDSSIMIncidentNumber" class="form-control" />
                 <span asp-validation-for="DGDSSIMIncidentNumber" class="text-danger"></span>
             </div>
+        </div>
+    </div>
+    <div class="row justify-content-between">
+        <div class="col-5">
             <div class="mb-3">
                 <label asp-for="IssoInformed" class="form-label">ISSO Informed</label>
-                <input id="IssoInformed" name="IssoInformed" asp-for="IssoInformed" type="datetime-local" class="form-control" />
+                <input type="datetime-local" asp-for="IssoInformed" class="form-control" />
                 <span asp-validation-for="IssoInformed" class="text-danger"></span>
             </div>
+        </div>
+        <div class="col-5">
             <div class="mb-3">
                 <label asp-for="ManagerInformed" class="form-label">Manager Informed</label>
-                <input id="ManagerInformed" name="ManagerInformed" asp-for="ManagerInformed" type="datetime-local" class="form-control" />
+                <input type="datetime-local" asp-for="ManagerInformed" class="form-control" />
                 <span asp-validation-for="ManagerInformed" class="text-danger"></span>
             </div>
+        </div>
+    </div>
+    <div class="row justify-content-between">
+        <div class="col-5">
             <div class="mb-3">
-                <label asp-for="NatureOfSpill" class="form-label">Nature of Spill</label>
-                <input asp-for="NatureOfSpill" class="form-control" />
-                <span asp-validation-for="NatureOfSpill" class="text-danger"></span>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <div class="mb-3 form-check">
-                        <label class="form-check-label">
-                            <input asp-for="BurnedAndAnnotated" class="form-check-input" /> Burned and Annotated
-                        </label>
-                    </div>                    
-                </div>
-                <div class="col">
-                    <div class="mb-3 form-check">
-                        <label class="form-check-label">
-                            <input asp-for="TransferRequestCompleted" class="form-check-input" /> <span>Transfer Request Completed</span>
-                        </label>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <div class="mb-3 form-check">
-                        <label class="form-check-label">
-                            <input asp-for="EmailTripleDeleted" class="form-check-input" /> Email Triple Deleted
-                        </label>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="mb-3 form-check">
-                        <label class="form-check-label">
-                            <input asp-for="ClientInformed" class="form-check-input" /> Client Informed
-                        </label>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <div class="mb-3 form-check">
-                        <label class="form-check-label">
-                            <input asp-for="ConsiderationPowerDown" class="form-check-input" /> Consideration Power Down
-                        </label>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="mb-3 form-check">
-                        <label class="form-check-label">
-                            <input asp-for="CDSent" class="form-check-input" /> CD Sent
-                        </label>
-                    </div>
-                </div>
-            </div>
-            <div class="mb-3">
-                <label asp-for="DateOfSpill" class="form-label">Date of Spill</label>
-                <input id="DateOfSpill" name="DateOfSpill" asp-for="DateOfSpill" type="datetime-local" class="form-control" />
+                <label asp-for="DateOfSpill" class="form-label">Date of Spill <span class="text-danger fw-bold">*</span></label>
+                <input type="datetime-local" asp-for="DateOfSpill" class="form-control" />
                 <span asp-validation-for="DateOfSpill" class="text-danger"></span>
             </div>
+        </div>
+        <div class="col-5">
             <div class="mb-3">
-                <label asp-for="TimeOfSpill" class="form-label">Time of Spill</label>
-                <input id="TimeOfSpill" name="TimeOfSpill" asp-for="TimeOfSpill" type="datetime-local" class="form-control" />
-                <span asp-validation-for="TimeOfSpill" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="TimeIdentifiedSpill" class="form-label">Time Identified as Spill</label>
-                <input id="TimeIdentifiedSpill" name="TimeIdentifiedSpill" asp-for="TimeIdentifiedSpill" type="datetime-local" class="form-control" />
+                <label asp-for="TimeIdentifiedSpill" class="form-label">Time Identified as Spill <span class="text-danger fw-bold">*</span></label>
+                <input type="datetime-local" asp-for="TimeIdentifiedSpill" class="form-control" />
                 <span asp-validation-for="TimeIdentifiedSpill" class="text-danger"></span>
             </div>
-            <div class="mb-3">
-                <label asp-for="TimeReported" class="form-label">Time Reported to ISSO</label>
-                <input id="TimeReported" name="TimeReported" asp-for="TimeReported" type="datetime-local" class="form-control" />
-                <span asp-validation-for="TimeReported" class="text-danger"></span>
-            </div>
+        </div>
+    </div>
+    <div class="row justify-content-between">
+        <div class="col-5">
             <div class="mb-3">
                 <label asp-for="WorkstationAffected" class="form-label">Workstation Affected</label>
                 <input asp-for="WorkstationAffected" class="form-control" />
                 <span asp-validation-for="WorkstationAffected" class="text-danger"></span>
             </div>
+        </div>
+        <div class="col-5">
             <div class="mb-3">
                 <label asp-for="WorkstationAssetNumber" class="form-label">Workstation Asset Number</label>
                 <input asp-for="WorkstationAssetNumber" class="form-control" />
                 <span asp-validation-for="WorkstationAssetNumber" class="text-danger"></span>
             </div>
+        </div>
+    </div>
+    <div class="row justify-content-between">
+        <div class="col-5">
             <div class="mb-3">
-                <label asp-for="SpecialistId" class="form-label">Specialist User Name</label>
-                <select asp-for="SpecialistId" asp-items="ViewBag.SpecialistUserId" class="form-control">
-                    <option value=""></option>
-                </select>
+                <input type="hidden" asp-for="SpecialistId" class="form-control" />
+                <label asp-for="SpecialistUser" class="form-label">Specialist User Name <span class="text-danger fw-bold">*</span></label>
+                @* <label asp-for="SpecialistId" class="form-label">Specialist User Name <span class="text-danger fw-bold">*</span></label>
+                <select asp-for="SpecialistId" asp-items="ViewBag.SpecialistUserId" class="form-control" required></select> *@
+                <input asp-for="SpecialistUser" value="@ViewBag.SpecialistUserName" class="form-control" required readonly />
                 <span asp-validation-for="SpecialistId" class="text-danger"></span>
             </div>
+        </div>
+        <div class="col-5">
             <div class="mb-3">
                 <label asp-for="ReviewerId" class="form-label">Reviewer User Name</label>
-                <select asp-for="ReviewerId" asp-items="ViewBag.ReviewerUserId" class="form-control">
-                    <option value=""></option>
-                </select>
+                <select asp-for="ReviewerId" asp-items="ViewBag.ReviewerUserId" class="form-control"></select>
                 <span asp-validation-for="ReviewerId" class="text-danger"></span>
             </div>
-
+        </div>
+    </div>
+    <div class="row justify-content-between">
+        <div class="col-5">
             <div class="mb-3">
-                <label asp-for="OrigSystemId" class="form-label">Originating System</label>
-                <select asp-for="OrigSystemId" class="form-control" asp-items="ViewBag.OrigSystemId"></select>
+                <input type="hidden" asp-for="OrigSystemId" class="form-control" />
+                <label asp-for="OrigSystem" class="form-label">Originating System <span class="text-danger fw-bold">*</span></label>
+                @* <label asp-for="OrigSystemId" class="form-label">Originating System <span class="text-danger fw-bold">*</span></label>
+                <select asp-for="OrigSystemId" class="form-control" asp-items="ViewBag.OrigSystemId" required></select> *@
+                <input asp-for="OrigSystem" value="@ViewBag.OrigSystem" class="form-control" required readonly />
                 <span asp-validation-for="OrigSystemId" class="text-danger"></span>
             </div>
+        </div>
+        <div class="col-5">
             <div class="mb-3">
-                <label asp-for="DestSystemId" class="form-label">Destination System</label>
-                <select asp-for="DestSystemId" class="form-control" asp-items="ViewBag.DestSystemId"></select>
+                <input type="hidden" asp-for="DestSystemId" class="form-control" />
+                <label asp-for="DestSystem" class="form-label">Destination System <span class="text-danger fw-bold">*</span></label>
+                @* <label asp-for="DestSystemId" class="form-label">Destination System <span class="text-danger fw-bold">*</span></label>
+                <select asp-for="DestSystemId" class="form-control" asp-items="ViewBag.DestSystemId" required></select> *@
+                <input asp-for="DestSystem" value="@ViewBag.DestSystem" class="form-control" required readonly />
                 <span asp-validation-for="DestSystemId" class="text-danger"></span>
             </div>
-
+        </div>
+    </div>
+    <div class="row justify-content-start">
+        <div class="col-3">
+            <div class="mb-3 form-check text-start">
+                <label class="form-check-label">
+                    <input asp-for="BurnedAndAnnotated" class="form-check-input" /> Burned and Annotated
+                </label>
+            </div>
+        </div>
+        <div class="col-9">
+            <div class="mb-3 form-check text-start">
+                <label class="form-check-label">
+                    <input asp-for="TransferRequestCompleted" class="form-check-input" /> <span>Transfer Request Completed</span>
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-start">
+        <div class="col-3">
+            <div class="mb-3 form-check text-start">
+                <label class="form-check-label">
+                    <input asp-for="ClientInformed" class="form-check-input" /> Client Informed
+                </label>
+            </div>
+        </div>
+        <div class="col-9">
+            <div class="mb-3 form-check text-start">
+                <label class="form-check-label">
+                    <input asp-for="ConsiderationPowerDown" class="form-check-input" /> Consideration Power Down
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-start">
+        <div class="col-3">
+            <div class="mb-3 form-check text-start">
+                <label class="form-check-label">
+                    <input asp-for="EmailTripleDeleted" class="form-check-input" /> Email Triple Deleted
+                </label>
+            </div>
+        </div>
+        <div class="col-9">
+            <div class="mb-3 form-check text-start">
+                <label class="form-check-label">
+                    <input asp-for="CDSent" class="form-check-input" /> CD Sent
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-between">
+        <div class="col-5">
             <div class="mb-3">
                 <input type="submit" value="Create" class="btn btn-primary" />
                 <a class="btn btn-primary" asp-action="Index">Back</a>
             </div>
-        </form>
+        </div>
+        <div class="col-5">
+        </div>
     </div>
-</div>
+</form>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

@@ -16,9 +16,7 @@ public class Spill
     public bool ConsiderationPowerDown { get; set; }
     public bool CDSent { get; set; }
     public DateTime? DateOfSpill { get; set; }
-    public DateTime? TimeOfSpill { get; set; }
     public DateTime? TimeIdentifiedSpill { get; set; }
-    public DateTime? TimeReported { get; set; }
     public string? WorkstationAffected { get; set; }
     public string? WorkstationAssetNumber { get; set; }
     public int SpecialistId { get; set; }

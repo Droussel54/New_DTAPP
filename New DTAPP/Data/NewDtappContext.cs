@@ -265,15 +265,9 @@ public partial class NewDtappContext : DbContext
             entity.Property(e => e.DateOfSpill)
                 .HasColumnType("datetime")
                 .HasColumnName("date_of_spill");
-            entity.Property(e => e.TimeOfSpill)
-                .HasColumnType("datetime")
-                .HasColumnName("time_of_spill");
             entity.Property(e => e.TimeIdentifiedSpill)
                 .HasColumnType("datetime")
                 .HasColumnName("time_identified_spill");
-            entity.Property(e => e.TimeReported)
-                .HasColumnType("datetime")
-                .HasColumnName("time_reported");
             entity.Property(e => e.WorkstationAffected)
                 .IsUnicode(false)
                 .HasColumnName("workstation_affected");

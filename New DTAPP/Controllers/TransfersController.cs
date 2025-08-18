@@ -138,7 +138,8 @@ namespace New_DTAPP.Controllers
             ViewBag.FilterCurrentYear = filterCurrentYear;
             ViewBag.FilterCurrentMonth = filterCurrentMonth;
             ViewBag.FilterCurrentWeek = filterCurrentWeek;
-            ViewData["SpillId"] = new SelectList(await _spillRepository.GetAllSpillsAsync(), "SpillId", "SpillId");
+            //ViewData["SpillId"] = new SelectList(await _spillRepository.GetAllSpillsAsync(), "SpillId", "SpillId");
+            //ViewData["IsSpillExist"] = _spillRepository.SpillExistsAsync();
 
             var transferModel = await _transferRepository.GetAllTransfersAsync();
             var q = transferModel.AsQueryable();
@@ -320,10 +321,13 @@ namespace New_DTAPP.Controllers
                     selectedDestSystem = @ViewBag.SelectedDestSystem
                 }));
             }
-            
 
+            var pagedTransfers = await q.ToPagedListAsync(pageNumber, pageSize);
+            var spills = await _spillRepository.GetAllSpillsAsync() as IList<SpillModel>;
 
-            return View(await q.ToPagedListAsync(pageNumber, pageSize));
+            var model = new Tuple<IPagedList<TransferModel>, IList<SpillModel>>(pagedTransfers, spills);
+
+            return View(model);
         }
 
         //// GET: Transfers/Details/5
@@ -600,7 +604,7 @@ namespace New_DTAPP.Controllers
         }
 
         // GET: Transfers/Delete/5
-        [CustomAuthorize(Roles = Constants.Admin)]
+        [CustomAuthorize(Roles = Constants.Admin + "," + Constants.Supervisor)]
         public async Task<IActionResult> Delete(int id)
         {
             var transfer = await _transferRepository.GetTransferByIdAsync(id);
@@ -618,7 +622,7 @@ namespace New_DTAPP.Controllers
         // POST: Transfers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(Roles = Constants.Admin)]
+        [CustomAuthorize(Roles = Constants.Admin + "," + Constants.Supervisor)]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var transfer = await _transferRepository.GetTransferByIdAsync(id);
@@ -628,7 +632,7 @@ namespace New_DTAPP.Controllers
             {
                 if (spill != null)
                 {
-                    await _spillRepository.RemoveSpillAsync(spill);
+                    //await _spillRepository.RemoveSpillAsync(spill);
                     await _transferRepository.UpdateSpillIdForTransferAsync(transfer.TransferId, 0);
                 }
 
