@@ -47,6 +47,7 @@ public class SpillsController : Controller
     }
 
     // GET: Spills
+    [CustomAuthorize(Roles = Constants.Admin)]
     public async Task<IActionResult> Index(int? page, string? sortOrder, string? selectedSpillStatus, string? raisedAfter, string? raisedBefore,
                                             string? selectedCompletedUser, string? selectedOrigSystem, string? selectedDestSystem, bool? filterCurrentYear,
                                             bool? filterCurrentMonth, bool? filterCurrentWeek, string? filtered, string? clearFilters)
@@ -221,6 +222,7 @@ public class SpillsController : Controller
     }
 
     // GET: Spills/Details/5
+    [CustomAuthorize(Roles = Constants.Admin)]
     public async Task<IActionResult> Details(int id)
     {
         var spill = await _spillRepository.GetSpillByIdAsync(id);
@@ -245,6 +247,17 @@ public class SpillsController : Controller
 
         if (transferId.HasValue)
         {
+            //model = await _spillRepository.GetSpillByTransferId(transferId!.Value);
+
+            //if (model != null)
+            //{
+            //    return await Edit(model.SpillId, transferId);
+            //}
+            //else
+            //{
+            //    model = new SpillModel();
+            //}
+
             model.TransferId = transferId.Value;
             ViewData["TransferId"] = transferId.Value;
 
@@ -253,24 +266,25 @@ public class SpillsController : Controller
             model.TransferRequestCompleted = transfer!.Urgent;
             ViewData["TransferRequestCompleted"] = transfer!.Urgent;
 
-            model.DateOfSpill = transfer.RequestCreatedAt;
-            ViewData["DateOfSpill"] = transfer.RequestCreatedAt;
+            model.DateOfSpill = transfer.SentTime;
+            ViewData["DateOfSpill"] = transfer.SentTime;
 
-            model.TimeOfSpill = transfer.SentTime;
-            ViewData["TimeOfSpill"] = transfer.SentTime;
-
-            model.TimeIdentifiedSpill = transfer.RequestCreatedAt;
-            ViewData["TimeIdentifiedSpill"] = transfer.RequestCreatedAt;
+            model.TimeIdentifiedSpill = DateTime.Parse(DateTime.Now.ToShortTimeString());
+            ViewData["TimeIdentifiedSpill"] = DateTime.Parse(DateTime.Now.ToShortTimeString());
 
             model.OrigSystemId = transfer.OrigSystemId;
             ViewData["OrigSystemId"] = transfer.OrigSystemId;
+            ViewData["OrigSystem"] = transfer.OrigSystem?.SystemName;
 
             model.DestSystemId = transfer.DestSystemId;
             ViewData["DestSystemId"] = transfer.DestSystemId;
+            ViewData["DestSystem"] = transfer.DestSystem?.SystemName;
+
         }
 
         model.SpecialistId = user!.UserId;
         ViewData["SpecialistUserId"] = new SelectList(await _userRepository.GetAllUsersAsync(true), "UserId", "Username", user?.UserId);
+        ViewData["SpecialistUserName"] = user?.Username;
         ViewData["ReviewerUserId"] = new SelectList(await _userRepository.GetAllUsersAsync(true), "UserId", "Username");
         ViewData["OrigSystemId"] = new SelectList(await _systemRepository.GetAllSystemsAsync(true), "SystemId", "SystemName");
         ViewData["DestSystemId"] = new SelectList(await _systemRepository.GetAllSystemsAsync(true), "SystemId", "SystemName");
@@ -286,7 +300,7 @@ public class SpillsController : Controller
     [ValidateAntiForgeryToken]
     [CustomAuthorize(Roles = Constants.Admin)]
     public async Task<IActionResult> Create([Bind("SpillId,SpillStatusId,CFNOCIncidentNumber,DGDSSIMIncidentNumber,BurnedAndAnnotated,IssoInformed,ManagerInformed,NatureOfSpill,TransferRequestCompleted,EmailTripleDeleted,ClientInformed," +
-        "ConsiderationPowerDown,CDSent,DateOfSpill,TimeOfSpill,TimeIdentifiedSpill,TimeReported," +
+        "ConsiderationPowerDown,CDSent,DateOfSpill,TimeIdentifiedSpill," +
         "WorkstationAffected,WorkstationAssetNumber,SpecialistId,ReviewerId,OrigSystemId,DestSystemId,TransferId")] Models.SpillModel spill)
     {
         if (ModelState.IsValid)
@@ -326,7 +340,7 @@ public class SpillsController : Controller
 
     // GET: Spills/Edit/5
     [CustomAuthorize(Roles = Constants.Admin)]
-    public async Task<IActionResult> Edit(int id)
+    public async Task<IActionResult> Edit(int id, int? transferId)
     {
         var spill = await _spillRepository.GetSpillByIdAsync(id);
 
@@ -339,10 +353,15 @@ public class SpillsController : Controller
         ViewData["CurrentUser"] = user;
 
         ViewData["SpecialistUserId"] = new SelectList(await _userRepository.GetAllUsersAsync(true), "UserId", "Username", user?.UserId);
+        ViewData["SpecialistUserName"] = user?.Username;
         ViewData["ReviewerUserId"] = new SelectList(await _userRepository.GetAllUsersAsync(true), "UserId", "Username");
         ViewData["OrigSystemId"] = new SelectList(await _systemRepository.GetAllSystemsAsync(true), "SystemId", "SystemName");
+        ViewData["OrigSystem"] = spill.OrigSystem?.SystemName;
         ViewData["DestSystemId"] = new SelectList(await _systemRepository.GetAllSystemsAsync(true), "SystemId", "SystemName");
+        ViewData["DestSystem"] = spill.DestSystem?.SystemName;
         ViewData["SpillStatusId"] = new SelectList(await _spillStatusRepository.GetAllSpillStatusesAsync(true), "SpillStatusId", "SpillStatusDesc");
+        ViewData["SpillIdForLink"] = id;
+        ViewData["TransferIdFromLink"] = transferId;
 
         return View(spill);
     }
@@ -353,8 +372,8 @@ public class SpillsController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     [CustomAuthorize(Roles = Constants.Admin)]
-    public async Task<IActionResult> Edit(int? id, [Bind("SpillId,SpillStatusId,CFNOCIncidentNumber,DGDSSIMIncidentNumber,BurnedAndAnnotated,IssoInformed,ManagerInformed,NatureOfSpill,TransferRequestCompleted,EmailTripleDeleted,ClientInformed," +
-        "ConsiderationPowerDown,CDSent,DateOfSpill,TimeOfSpill,TimeIdentifiedSpill,TimeReported," +
+    public async Task<IActionResult> Edit(int? id, int? transferId, [Bind("SpillId,SpillStatusId,CFNOCIncidentNumber,DGDSSIMIncidentNumber,BurnedAndAnnotated,IssoInformed,ManagerInformed,NatureOfSpill,TransferRequestCompleted,EmailTripleDeleted,ClientInformed," +
+        "ConsiderationPowerDown,CDSent,DateOfSpill,TimeIdentifiedSpill," +
         "WorkstationAffected,WorkstationAssetNumber,SpecialistId,ReviewerId,OrigSystemId,DestSystemId,TransferId")] Models.SpillModel spill)
     {
         if (id == null)
@@ -367,6 +386,11 @@ public class SpillsController : Controller
             try
             {
                 _spillRepository.UpdateSpillAsync(spill);
+
+                if (transferId != null)
+                {
+                    await _transferRepository.UpdateSpillIdForTransferAsync(transferId, id);
+                }
             }
             catch (DbUpdateConcurrencyException)
             {

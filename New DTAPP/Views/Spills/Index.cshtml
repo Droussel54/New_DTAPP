@@ -14,9 +14,9 @@
 <div style="margin-left:2%;margin-right:5%;">
     <h1>Index</h1>
 
-    <p>
+    @* <p>
         <a asp-action="Create"><img src="~/images/Add.png" /></a>
-    </p>
+    </p> *@
 
     <form asp-action="Index">
         <input type="hidden" name="filtered" value="ButtonClicked" />
@@ -161,14 +161,8 @@
                         Date of Spill
                     </th>
                     <th>
-                        Time Of Spill
-                    </th>
-                    <th>
                         Time Identified as Spill
                     </th>
-                    @* <th>
-                        Time Reported to ISSO
-                    </th> *@
                     @* <th>
                         Workstation Affected
                     </th>
@@ -235,14 +229,8 @@
                         @Html.DisplayFor(modelItem => item.DateOfSpill)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.TimeOfSpill)
-                    </td>
-                    <td>
                         @Html.DisplayFor(modelItem => item.TimeIdentifiedSpill)
                     </td>
-                    @* <td>
-                        @Html.DisplayFor(modelItem => item.TimeReported)
-                    </td> *@
                     @* <td>
                         @Html.DisplayFor(modelItem => item.WorkstationAffected)
                     </td> 

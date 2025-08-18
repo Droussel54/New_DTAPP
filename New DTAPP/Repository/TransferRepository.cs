@@ -147,7 +147,7 @@ namespace New_DTAPP.Repository
             return await _context.Transfers.AnyAsync(t => t.TransferId == id);
         }
 
-        public async Task UpdateSpillIdForTransferAsync(int transferId, int spillId)
+        public async Task UpdateSpillIdForTransferAsync(int? transferId, int? spillId)
         {
             var transfer = await _context.Transfers.FirstOrDefaultAsync(t => t.TransferId == transferId);
 

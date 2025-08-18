@@ -45,16 +45,16 @@
                                     <li class="nav-item">
                                         <a class="dropdown-item" asp-area="" asp-controller="FileExtensions" asp-action="Index">File Extensions</a>
                                     </li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li class="nav-item">
-                                        <a class="dropdown-item" asp-area="" asp-controller="Spills" asp-action="Index">Spills</a>
-                                    </li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li class="nav-item">
-                                        <a class="dropdown-item" asp-area="" asp-controller="SpillStatuses" asp-action="Index">Spill Statuses</a>
-                                    </li>
                                     @if (User.IsInRole(Admin))
                                     {
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li class="nav-item">
+                                            <a class="dropdown-item" asp-area="" asp-controller="Spills" asp-action="Index">Spills</a>
+                                        </li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li class="nav-item">
+                                            <a class="dropdown-item" asp-area="" asp-controller="SpillStatuses" asp-action="Index">Spill Statuses</a>
+                                        </li>
                                         <li><hr class="dropdown-divider"></li>
                                         <li class="nav-item">
                                             <a class="dropdown-item" asp-area="" asp-controller="TransferType" asp-action="Index">TransferType</a>

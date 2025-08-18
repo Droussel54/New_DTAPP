@@ -16,6 +16,7 @@ public class SpillStatusesController : Controller
     }
 
     // GET: SpillStatuses
+    [CustomAuthorize(Roles = Constants.Admin)]
     public async Task<IActionResult> Index()
     {
         var spillStatuses = await _spillStatusRepository.GetAllSpillStatusesAsync();
@@ -24,6 +25,7 @@ public class SpillStatusesController : Controller
     }
 
     // GET: SpillStatuses/Details/5
+    [CustomAuthorize(Roles = Constants.Admin)]
     public async Task<IActionResult> Details(int id)
     {
         var spillStatus = await _spillStatusRepository.GetSpillStatusByIdAsync(id);
