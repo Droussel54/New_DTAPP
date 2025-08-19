@@ -25,7 +25,7 @@ else
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="SpillId" />
             <div class="mb-3">
-                <label class="form-label">Transfer Request <span class="text-danger fw-bold">*</span></label>
+                <label class="form-label">Transfer Request</label>
                 <input type="hidden" asp-for="TransferId" class="form-control" readonly /><br />
                 <a class="form-control btn btn-primary" target="_blank" asp-controller="Transfers" asp-action="Details" asp-route-id="@Model.TransferId" title="Open the Transfer in a new tab">
                     View Transfer <img id="testing" style="vertical-align:text-top!important;margin-left:5px!important;" src="~/images/box-arrow-up-right.svg" alt="Link to Transfer Image" height="20" width="20" />
@@ -120,10 +120,8 @@ else
         <div class="col-5">
             <div class="mb-3">
                 <input type="hidden" asp-for="SpecialistId" class="form-control" />
-                <label asp-for="SpecialistUser" class="form-label">Specialist User Name <span class="text-danger fw-bold">*</span></label>
-                @* <label asp-for="SpecialistId" class="form-label">Specialist User Name <span class="text-danger fw-bold">*</span></label>
-                <select asp-for="SpecialistId" asp-items="ViewBag.SpecialistUserId" class="form-control" required></select> *@
-                <input asp-for="SpecialistUser" value="@ViewBag.SpecialistUserName" class="form-control" required readonly />
+                <label asp-for="SpecialistId" class="form-label">Specialist User Name <span class="text-danger fw-bold">*</span></label>
+                <select asp-for="SpecialistId" asp-items="ViewBag.SpecialistUserId" class="form-control" disabled></select>
                 <span asp-validation-for="SpecialistId" class="text-danger"></span>
             </div>
         </div>
@@ -141,20 +139,16 @@ else
         <div class="col-5">
             <div class="mb-3">
                 <input type="hidden" asp-for="OrigSystemId" class="form-control" />
-                <label asp-for="OrigSystem" class="form-label">Originating System <span class="text-danger fw-bold">*</span></label>
-                @* <label asp-for="OrigSystemId" class="form-label">Originating System <span class="text-danger fw-bold">*</span></label>
-                <select asp-for="OrigSystemId" class="form-control" asp-items="ViewBag.OrigSystemId" required></select> *@
-                <input asp-for="OrigSystem" value="@ViewBag.OrigSystem" class="form-control" required readonly />
+                <label asp-for="OrigSystemId" class="form-label">Originating System <span class="text-danger fw-bold">*</span></label>
+                <select asp-for="OrigSystemId" asp-items="ViewBag.OrigSystemId" class="form-control" disabled></select>
                 <span asp-validation-for="OrigSystemId" class="text-danger"></span>
             </div>
         </div>
         <div class="col-5">
             <div class="mb-3">
                 <input type="hidden" asp-for="DestSystemId" class="form-control" />
-                <label asp-for="DestSystem" class="form-label">Destination System <span class="text-danger fw-bold">*</span></label>
-                @* <label asp-for="DestSystemId" class="form-label">Destination System <span class="text-danger fw-bold">*</span></label>
-                <select asp-for="DestSystemId" class="form-control" asp-items="ViewBag.DestSystemId" required></select> *@
-                <input asp-for="DestSystem" value="@ViewBag.DestSystem" class="form-control" required readonly />
+                <label asp-for="DestSystemId" class="form-label">Destination System <span class="text-danger fw-bold">*</span></label>
+                <select asp-for="DestSystemId" asp-items="ViewBag.DestSystemId" class="form-control" disabled></select>
                 <span asp-validation-for="DestSystemId" class="text-danger"></span>
             </div>
         </div>

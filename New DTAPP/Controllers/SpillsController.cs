@@ -195,7 +195,7 @@ public class SpillsController : Controller
                 q = q.OrderByDescending(t => t.DestSystemId);
                 break;
             default:
-                q = q.OrderByDescending(t => t.DateOfSpill);
+                q = q.OrderByDescending(t => t.TimeIdentifiedSpill);
                 break;
         }
 
@@ -349,16 +349,10 @@ public class SpillsController : Controller
             return NotFound();
         }
 
-        var user = await GetCurrentUser();
-        ViewData["CurrentUser"] = user;
-
-        ViewData["SpecialistUserId"] = new SelectList(await _userRepository.GetAllUsersAsync(true), "UserId", "Username", user?.UserId);
-        ViewData["SpecialistUserName"] = user?.Username;
+        ViewData["SpecialistUserId"] = new SelectList(await _userRepository.GetAllUsersAsync(true), "UserId", "Username");
         ViewData["ReviewerUserId"] = new SelectList(await _userRepository.GetAllUsersAsync(true), "UserId", "Username");
         ViewData["OrigSystemId"] = new SelectList(await _systemRepository.GetAllSystemsAsync(true), "SystemId", "SystemName");
-        ViewData["OrigSystem"] = spill.OrigSystem?.SystemName;
         ViewData["DestSystemId"] = new SelectList(await _systemRepository.GetAllSystemsAsync(true), "SystemId", "SystemName");
-        ViewData["DestSystem"] = spill.DestSystem?.SystemName;
         ViewData["SpillStatusId"] = new SelectList(await _spillStatusRepository.GetAllSpillStatusesAsync(true), "SpillStatusId", "SpillStatusDesc");
         ViewData["SpillIdForLink"] = id;
         ViewData["TransferIdFromLink"] = transferId;
