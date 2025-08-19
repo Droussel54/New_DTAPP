@@ -232,6 +232,11 @@ public class SpillsController : Controller
             return NotFound();
         }
 
+        //ViewData["ISSOInformed"] = "";
+        //ViewData["ManagerInformed"]
+        //ViewData["DateOfSpill"]
+        //ViewData["TimeIdentifiedAsSpill"]
+
         return View(spill);
     }
 

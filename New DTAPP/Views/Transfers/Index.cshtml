@@ -654,7 +654,7 @@
                 {
                     @if (item.SpillOccurred && item.SpillId.HasValue)
                     {
-                        <a target="_blank" asp-controller="Spills" asp-action="Details" asp-route-id="@item.Spill!.SpillId"><img src="~/images/box-arrow-up-right.svg" alt="Link to Spill" height="20" width="20" title="View Spill" style="margin-left: 25px;" /></a>
+                        <a asp-controller="Spills" asp-action="Details" asp-route-id="@item.Spill!.SpillId"><img src="~/images/box-arrow-up-right.svg" alt="Link to Spill" height="20" width="20" title="View Spill" style="margin-left: 25px;" /></a>
                     }
                     else if (item.SpillOccurred && !item.SpillId.HasValue) {
                         var isSpillExist = false;
@@ -683,7 +683,7 @@
                                                 <h6>Choose an existing Spill to link to the transfer.</h6>
                                                 @foreach (var spill in Spills)
                                                 {
-                                                    <a title="SpillId: @spill.SpillId" class="btn btn-primary m-1" target="_blank" asp-controller="Spills" asp-action="Edit" asp-route-id="@spill.SpillId" asp-route-transferId="@item.TransferId">
+                                                    <a title="SpillId: @spill.SpillId" class="btn btn-primary m-1" asp-controller="Spills" asp-action="Edit" asp-route-id="@spill.SpillId" asp-route-transferId="@item.TransferId">
                                                         [@spill.NatureOfSpill]
                                                     </a>
                                                 }
@@ -696,13 +696,13 @@
                                 </div>
                             }
                             else {
-                                <a target="_blank" asp-controller="Spills" asp-action="Edit" asp-route-id="@Spills[0].SpillId" asp-route-transferId="@item.TransferId">
+                                <a asp-controller="Spills" asp-action="Edit" asp-route-id="@Spills[0].SpillId" asp-route-transferId="@item.TransferId">
                                     <img src="~/images/Sync.svg" alt="Link Spill" height="20" width="20" title="Link Spill" style="margin-left: 25px;" />
                                 </a>
                             }
                         }
                         else {
-                            <a target="_blank" asp-controller="Spills" asp-action="Create" asp-route-transferId="@item.TransferId">
+                            <a asp-controller="Spills" asp-action="Create" asp-route-transferId="@item.TransferId">
                                 <img src="~/images/Add.png" alt="Create a Spill" height="20" width="20" title="Create Spill" style="margin-left: 25px;" />
                             </a>
                         }

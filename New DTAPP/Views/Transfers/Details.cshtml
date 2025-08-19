@@ -173,11 +173,11 @@
     {
         @if (Model.SpillId != null)
         {
-            <a target="_blank" class="btn btn-primary" asp-controller="Spills" asp-action="Details" asp-route-id="@Model.SpillId">View Spill</a> <span>|</span>
+            <a class="btn btn-primary" asp-controller="Spills" asp-action="Details" asp-route-id="@Model.SpillId">View Spill</a> <span>|</span>
         }
         else if (Model.SpillOccurred && Model.SpillId == null)
         {
-            <a target="_blank" class="btn btn-primary" asp-controller="Spills" asp-action="Create" asp-route-transferId="@Model.TransferId">Create Spill</a> <span>|</span>
+            <a class="btn btn-primary" asp-controller="Spills" asp-action="Create" asp-route-transferId="@Model.TransferId">Create Spill</a> <span>|</span>
         }
     }
     @if (User.IsInRole(Admin) || User.IsInRole(Supervisor)) 

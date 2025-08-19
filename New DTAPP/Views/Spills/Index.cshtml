@@ -250,7 +250,7 @@
                         @Html.DisplayFor(modelItem => item.DestSystem!.SystemName)
                     </td> *@
                     <td>
-                        <a target="_blank" asp-controller="Transfers" asp-action="Details" asp-route-id="@item.TransferId">
+                        <a asp-controller="Transfers" asp-action="Details" asp-route-id="@item.TransferId">
                             <img src="~/images/box-arrow-up-right.svg" alt="Link to Transfer Image" height="20" width="20" title="View Transfer" style="margin-left: 20px;" />
                         </a>
                     </td>

@@ -8,7 +8,7 @@
 {
     <h1>
         Linking 
-        <a target="_blank" asp-controller="Transfers" asp-action="Details" asp-route-id="@ViewBag.TransferIdFromLink" title="Linking TransferId: @ViewBag.TransferIdFromLink to SpillId: @ViewBag.SpillIdForLink">
+        <a asp-controller="Transfers" asp-action="Details" asp-route-id="@ViewBag.TransferIdFromLink" title="Linking TransferId: @ViewBag.TransferIdFromLink to SpillId: @ViewBag.SpillIdForLink">
             Transfer
         </a>
     </h1>
@@ -27,7 +27,7 @@ else
             <div class="mb-3">
                 <label class="form-label">Transfer Request</label>
                 <input type="hidden" asp-for="TransferId" class="form-control" readonly /><br />
-                <a class="form-control btn btn-primary" target="_blank" asp-controller="Transfers" asp-action="Details" asp-route-id="@Model.TransferId" title="Open the Transfer in a new tab">
+                <a class="form-control btn btn-primary" asp-controller="Transfers" asp-action="Details" asp-route-id="@Model.TransferId" title="Open the Transfer in a new tab">
                     View Transfer <img id="testing" style="vertical-align:text-top!important;margin-left:5px!important;" src="~/images/box-arrow-up-right.svg" alt="Link to Transfer Image" height="20" width="20" />
                 </a>
                 <span asp-validation-for="TransferId" class="text-danger"></span>
