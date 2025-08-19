@@ -23,6 +23,7 @@ else
     <div class="row justify-content-between">
         <div class="col-5">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="SpillId" />
             <div class="mb-3">
                 <label class="form-label">Transfer Request <span class="text-danger fw-bold">*</span></label>
                 <input type="hidden" asp-for="TransferId" class="form-control" readonly /><br />
@@ -129,7 +130,9 @@ else
         <div class="col-5">
             <div class="mb-3">
                 <label asp-for="ReviewerId" class="form-label">Reviewer User Name</label>
-                <select asp-for="ReviewerId" asp-items="ViewBag.ReviewerUserId" class="form-control"></select>
+                <select asp-for="ReviewerId" asp-items="ViewBag.ReviewerUserId" class="form-control">
+                    <option></option>
+                </select>
                 <span asp-validation-for="ReviewerId" class="text-danger"></span>
             </div>
         </div>
