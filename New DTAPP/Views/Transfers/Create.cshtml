@@ -178,12 +178,13 @@
                     </div>
                     <div class="row align-items-center g-0 my-2">
                         <div class="col">
-                            <select asp-for="FileExtensionModel" asp-items="ViewBag.FileExtensionId" class="form-control" id="addExt" name="addExt">
-                                <option value="" selected disabled>Select a file extension...</option>
-                            </select>
+                            <input asp-for="FileExtensionModel"
+                                   type="text"
+                                   id="addExt"
+                                   name="addExt"
+                                   class="form-control"
+                                   placeholder="File Extension (e.g. pdf)" />
                             <span asp-validation-for="FileExtensionModel" class="text-danger"></span>
-
-                            @* <input type="text" id="addExt" placeholder="File Extension (ie pdf)" name="addExt" class="form-control"> *@
                         </div>
                         <div class="col col-md-2">
                             <input type="number" id="addSize" placeholder="0.0" name="addSize" class="form-control">
