@@ -18,7 +18,7 @@
                 @if (Model.TransferId != 0)
                 {
                     <input type="hidden" asp-for="TransferId" class="form-control" readonly /><br />
-                    <a class="form-control btn btn-primary" target="_blank" asp-controller="Transfers" asp-action="Details" asp-route-id="@Model.TransferId" title="Open the Transfer in a new tab">
+                    <a class="form-control btn btn-primary" asp-controller="Transfers" asp-action="Details" asp-route-id="@Model.TransferId" title="Open the Transfer in a new tab">
                         View Transfer <img id="testing" style="vertical-align:text-top!important;margin-left:5px!important;" src="~/images/box-arrow-up-right.svg" alt="Link to Transfer Image" height="20" width="20" />
                     </a>
                 }
