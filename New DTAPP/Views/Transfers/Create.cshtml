@@ -15,7 +15,6 @@
         <form asp-action="Create">
             <input id="fileList" name="fileList" value="@ViewData["FileList"]" hidden />
             
-
             <div class="row">
                 <div class="col-md-4">
                     <div asp-validation-summary="All" class="text-danger"></div>
@@ -169,7 +168,7 @@
                         <a class="btn btn-primary" asp-action="Index">Back</a>
                     </div>
                 </div>
-                <div class="col">
+                <div class="col overflow-x-auto">
                     <div>
                         <label for="files" class="btn btn-secondary">Choose files to transfer</label>
                         <input type="file" id="files" name="files" style="display:none" multiple>
@@ -185,7 +184,7 @@
                             <span asp-validation-for="FileExtensionModel" class="text-danger"></span>
                         </div>
                         <div class="col col-md-2">
-                            <input type="number" id="addSize" placeholder="0.0" name="addSize" class="form-control">
+                            <input type="number" step="any" id="addSize" placeholder="0.0" name="addSize" class="form-control">
                         </div>
                         <div class="col align-self-end col-md-2">
                             <select class="form-select" name="size" id="sizeDropDn">
@@ -197,15 +196,13 @@
                         </div>
                         <div class="col align-self-end col-md-2">
                             <input type="image" src="~/images/Add.png" id="addSingleFile"/>
-                        <div></div>
-                    </div>
-                    <div class="preview" style="padding-top: 1rem;">
+                            <div></div>
+                        </div>
+                        <div class="preview" style="padding-top: 1rem;">
+                        </div>
                     </div>
                 </div>
             </div>
-
-
-          
         </form>
     </div>
 </div>
@@ -224,14 +221,14 @@
             files.addEventListener('change', function () { console.log(files.files); addInputToJsonFileList(files.files); });
             folder.addEventListener('change', function () { addInputToJsonFileList(folder.files); });
             addsingle.addEventListener('click', function (event) {
-                let addExt = document.getElementById('addExt');
-                let fileExt = addExt.options[addExt.selectedIndex].text;
-                event.preventDefault(); addManualFiletoJsonFileList(fileExt, document.getElementById('addSize').value, document.getElementById('sizeDropDn').value);
+                // let addExt = document.getElementById('addExt');
+                // let fileExt = addExt.options[addExt.selectedIndex].text;
+                // event.preventDefault(); addManualFiletoJsonFileList(fileExt, document.getElementById('addSize').value, document.getElementById('sizeDropDn').value);
+                event.preventDefault(); addManualFiletoJsonFileList(document.getElementById('addExt').value, document.getElementById('addSize').value, document.getElementById('sizeDropDn').value);
             });
 
             //added this
             listFiles(JSON.parse($("#fileList").val()), false); 
         });
-        
     </script>
 }

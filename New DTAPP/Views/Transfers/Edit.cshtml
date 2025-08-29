@@ -169,7 +169,7 @@
                 <a class="btn btn-primary" asp-action="Index">Back</a>
             </div>
         </div>
-        <div class="col">
+        <div class="col overflow-x-auto">
             <div>
                 <label for="files" class="btn btn-secondary">Choose files to transfer</label>
                 <input type="file" id="files" name="files" style="display:none" multiple>
@@ -185,7 +185,7 @@
                     <span asp-validation-for="FileExtensionModel" class="text-danger"></span>
                 </div>
                 <div class="col col-md-2">
-                    <input type="number" id="addSize" placeholder="0.0" name="addSize" class="form-control">
+                    <input type="number" step="any" id="addSize" placeholder="0.0" name="addSize" class="form-control">
                 </div>
                 <div class="col align-self-end col-md-2">
                     <select class="form-select" name="size" id="sizeDropDn">
