@@ -27,7 +27,7 @@ function addManualFiletoJsonFileList(ext, fileSize, unit) {
             fileJsonArray = JSON.parse(document.getElementById("fileList").value);
         }
         var inc = 0;
-        fileJsonArray.push({ "fileId": inc, "fileName": "Manualy Added", "fileExt": ext, "fileSize": fileSize, "fileSent": true, "fileComment": "" });
+        fileJsonArray.push({ "fileId": inc, "fileName": "Manually Added", "fileExt": ext, "fileSize": fileSize, "fileSent": true, "fileComment": "" });
         listFiles(fileJsonArray, false);
     }
 }
